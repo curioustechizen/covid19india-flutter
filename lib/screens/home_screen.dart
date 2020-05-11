@@ -1,4 +1,4 @@
-import 'package:covid19in/ColorPalette.dart';
+import 'package:covid19in/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -6,6 +6,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         SummaryCard(
           summaryColor: kConfirmed,
@@ -14,7 +15,15 @@ class HomeScreen extends StatelessWidget {
         SummaryCard(
           summaryColor: kActive,
           data: SummaryData(title: "Active", total: 43976, showDiff: false),
-        )
+        ),
+        SummaryCard(
+          summaryColor: kRecovered,
+          data: SummaryData(title: "Recovered", total: 20969, diff: 1668),
+        ),
+        SummaryCard(
+          summaryColor: kDeceased,
+          data: SummaryData(title: "Deceased", total: 2212, diff: 111),
+        ),
       ],
     );
   }
