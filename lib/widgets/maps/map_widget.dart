@@ -28,14 +28,13 @@ class _MapWidgetState extends State<MapWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print("Inside MapWidget: _category = ${widget.category}");
     return new LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints){
       double width = constraints.minWidth;
       double height = constraints.minHeight;
       double x = (width / 2.0) - (MapSvgData.width / 2.0);
       double y = (height / 2.0) - (MapSvgData.height / 2.0);
       Offset offset = Offset(x, y);
-      double scaleFactor = 1.0;
+      double scaleFactor = 0.85;
 
       return Transform.scale(
           scale: ((height / MapSvgData.height)) * scaleFactor,
@@ -60,7 +59,6 @@ class _MapWidgetState extends State<MapWidget> {
         clipBehavior: Clip.antiAlias,
         child: Stack(children: <Widget>[
           Material(
-              color: Color(0xFFFFCCBC),
               child: InkWell(
                   onTap: () => _regionPressed(region),
                   child: Container(

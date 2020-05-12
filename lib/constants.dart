@@ -13,6 +13,9 @@ const kCanvasColor = const Color(0xfff6f6f7);
 const kDrawerTextcolor = const Color(0xFF6c757d);
 const kDrawerSelectedColor = const Color(0xff4c75f2);
 
+const kMapSvgHeight = 331.71;
+const kMapSvgWidth = 320.0;
+
 MaterialColor generateMaterialColor(Color color) {
   return MaterialColor(color.value, {
     50: tintColor(color, 0.5),

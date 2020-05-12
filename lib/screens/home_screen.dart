@@ -2,6 +2,7 @@ import 'package:covid19in/constants.dart';
 import 'package:covid19in/data/category.dart';
 import 'package:covid19in/data/hardcoded_data.dart';
 import 'package:covid19in/widgets/maps/map_widget.dart';
+import 'package:covid19in/widgets/zoomable.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,62 +15,65 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.all(16.0),
-      children: <Widget>[
-        SummaryRow(
-          selectedCategory: _selectedCategory,
-          onCategorySelected: (Category category) {
-            setState(() {
-              _selectedCategory = category;
-              print("New selected category = $_selectedCategory");
-            });
-          },
-        ),
-        SizedBox(
-          height: 16.0,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text(
-              "Total",
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .headline6
-                  .copyWith(color: kConfirmed, fontWeight: FontWeight.bold),
-            ),
-            RichText(
-              textAlign: TextAlign.end,
-              text: TextSpan(
-                  text: "Last updated\n",
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .bodyText2
-                      .copyWith(color: kRecovered),
-                  children: <InlineSpan>[
-                    TextSpan(
-                        text: "about 2 hours ago",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .subtitle1
-                            .copyWith(
-                            color: kRecovered, fontWeight: FontWeight.w600))
-                  ]),
-            )
-          ],
-        ),
-        Container(
-            height: 331.71,
-            width: 320.0,
-            child: MapWidget(
-              category: _selectedCategory,
-              statistics: statistics,
-            )),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: <Widget>[
+          SummaryRow(
+            selectedCategory: _selectedCategory,
+            onCategorySelected: (Category category) {
+              setState(() {
+                _selectedCategory = category;
+              });
+            },
+          ),
+          SizedBox(
+            height: 16.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                "Total",
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headline6
+                    .copyWith(color: kConfirmed, fontWeight: FontWeight.bold),
+              ),
+              RichText(
+                textAlign: TextAlign.end,
+                text: TextSpan(
+                    text: "Last updated\n",
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .bodyText2
+                        .copyWith(color: kRecovered),
+                    children: <InlineSpan>[
+                      TextSpan(
+                          text: "about 2 hours ago",
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .subtitle1
+                              .copyWith(
+                              color: kRecovered, fontWeight: FontWeight.w600))
+                    ]),
+              )
+            ],
+          ),
+          Container(
+              height: kMapSvgHeight * 1.1,
+              width: kMapSvgWidth * 1.1,
+              child: ZoomableWidget(
+                child: MapWidget(
+                  category: _selectedCategory,
+                  statistics: statistics,
+                ),
+              )),
+        ],
+      ),
     );
   }
 }
