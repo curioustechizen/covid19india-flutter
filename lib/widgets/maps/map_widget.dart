@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:covid19in/constants.dart';
 import 'package:covid19in/data/category.dart';
 ///
@@ -34,7 +36,7 @@ class _MapWidgetState extends State<MapWidget> {
       double x = (width / 2.0) - (MapSvgData.width / 2.0);
       double y = (height / 2.0) - (MapSvgData.height / 2.0);
       Offset offset = Offset(x, y);
-      double scaleFactor = 0.85;
+      double scaleFactor = 1.0;
 
       return Transform.scale(
           scale: ((height / MapSvgData.height)) * scaleFactor,
@@ -62,7 +64,7 @@ class _MapWidgetState extends State<MapWidget> {
               child: InkWell(
                   onTap: () => _regionPressed(region),
                   child: Container(
-                      color: getColorForStat(widget.statistics[region], widget.category)
+                      color: getColorForStatGradient(widget.statistics[region], widget.category)
                   ))),
           CustomPaint(painter: PathPainter(region, _pressedProvince == region, widget.category))
         ]),
@@ -92,7 +94,7 @@ class PathPainter extends CustomPainter {
         Paint()
           ..style = PaintingStyle.stroke
           ..color = _isPressed ? baseColor : baseColor.withAlpha(64)
-          ..strokeWidth = _isPressed ? 2.0 : 1.0);
+          ..strokeWidth = _isPressed ? 3.0 : 1.0);
   }
 
   @override
@@ -115,14 +117,16 @@ class PathClipper extends CustomClipper<Path> {
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
 
-Color getColorForStat(int count, Category category) {
-  final baseColor = getBaseColorForCategory(category);
-  final maxLightness = 0.95;
-  final minLightness = 0.4;
-  final fraction = 1.0 - count.toDouble() / getMaxCountForCategory(category);
-  final lightness = fraction > maxLightness ? maxLightness : fraction;
-  final lightness1 = lightness < minLightness ? minLightness : lightness;
-  return HSLColor.fromColor(baseColor).withLightness(lightness1).toColor();
+Color getColorForStatGradient(int count, Category category) {
+
+  final colors = colorGradientMap[category];
+  final start = colors[0];
+  final end = colors[1];
+
+
+  final fraction = count.toDouble() / getMaxCountForCategory(category);
+  final adjusted = min(max(fraction, 0.05), 0.95);
+  return Color.lerp(start, end, adjusted);
 }
 
 Color getBaseColorForCategory(Category category) {

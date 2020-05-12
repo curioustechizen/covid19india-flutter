@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:covid19in/data/category.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -12,6 +13,13 @@ const kTested = const Color(0x201aa2dd);
 const kCanvasColor = const Color(0xfff6f6f7);
 const kDrawerTextcolor = const Color(0xFF6c757d);
 const kDrawerSelectedColor = const Color(0xff4c75f2);
+
+final Map<Category, List<Color>> colorGradientMap = {
+  Category.confirmed: [const Color(0xFFFFEFE6), const Color(0xffE40101)],
+  Category.active: [Colors.white, const Color(0xff0f579f)],
+  Category.recovered: [Colors.white, const Color(0xff0a7232)],
+  Category.deceased: [Colors.white, const Color(0xff2f2f2f)],
+};
 
 const kMapSvgHeight = 331.71;
 const kMapSvgWidth = 320.0;
