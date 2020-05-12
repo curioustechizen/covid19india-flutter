@@ -13,24 +13,22 @@ import 'map_svg_data.dart';
 class MapWidget extends StatefulWidget {
   final Map<StateUT, int> statistics;
   final Category category;
-  MapWidget({this.title, this.statistics, this.category});
 
-  final String title;
+  MapWidget({Key key, this.statistics, this.category}): super(key: key);
 
   @override
-  _MapWidgetState createState() => _MapWidgetState(statistics, category);
+  _MapWidgetState createState() => _MapWidgetState();
 }
 
 class _MapWidgetState extends State<MapWidget> {
   StateUT _pressedProvince;
-  final Map<StateUT, int> _statistics;
-  final Category _category;
 
-  _MapWidgetState(this._statistics, this._category);
+
+  _MapWidgetState();
 
   @override
   Widget build(BuildContext context) {
-    
+    print("Inside MapWidget: _category = ${widget.category}");
     return new LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints){
       double width = constraints.minWidth;
       double height = constraints.minHeight;
@@ -66,9 +64,9 @@ class _MapWidgetState extends State<MapWidget> {
               child: InkWell(
                   onTap: () => _regionPressed(region),
                   child: Container(
-                      color: getColorForStat(_statistics[region], _category)
+                      color: getColorForStat(widget.statistics[region], widget.category)
                   ))),
-          CustomPaint(painter: PathPainter(region, _pressedProvince == region, _category))
+          CustomPaint(painter: PathPainter(region, _pressedProvince == region, widget.category))
         ]),
         clipper: PathClipper(region));
   }
@@ -145,16 +143,17 @@ Color getBaseColorForCategory(Category category) {
 }
 
 int getMaxCountForCategory(Category category) {
-  switch(category) {
-    case Category.confirmed:
-      return 25000;
-    case Category.active:
-      return 20000;
-    case Category.recovered:
-      return 4000;
-    case Category.deceased:
-      return 1000;
-    case Category.tested:
-      return 250000;
-  }
+//  switch(category) {
+//    case Category.confirmed:
+//      return 25000;
+//    case Category.active:
+//      return 20000;
+//    case Category.recovered:
+//      return 4000;
+//    case Category.deceased:
+//      return 1000;
+//    case Category.tested:
+//      return 250000;
+//  }
+return 25000;
 }
