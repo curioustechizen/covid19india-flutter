@@ -1,4 +1,6 @@
 import 'package:covid19in/constants.dart';
+import 'package:covid19in/data/category.dart';
+import 'package:covid19in/data/hardcoded_data.dart';
 import 'package:covid19in/widgets/maps/map_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +49,7 @@ class HomeScreen extends StatelessWidget {
           Container(
             height: 331.71,
               width: 320.0,
-              child: MapWidget()
+              child: MapWidget(title: "",category: Category.confirmed, statistics: statistics,)
           ),
         ],
     );

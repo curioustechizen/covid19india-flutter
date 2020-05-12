@@ -8,6 +8,7 @@ const kConfirmed = const Color(0xFFFF073A);
 const kActive = const Color(0xFF007BFF);
 const kRecovered = const Color(0xFF28A745);
 const kDeceased = const Color(0xFF6C757D);
+const kTested = const Color(0x201aa2dd);
 const kCanvasColor = const Color(0xfff6f6f7);
 const kDrawerTextcolor = const Color(0xFF6c757d);
 const kDrawerSelectedColor = const Color(0xff4c75f2);

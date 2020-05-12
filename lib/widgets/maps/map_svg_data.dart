@@ -47,8 +47,8 @@ enum StateUT {
   an
 }
 
-Path getPathByProvince(StateUT province) {
-  switch (province) {
+Path getPathByRegion(StateUT region) {
+  switch (region) {
 
     case StateUT.jk:
       return MapSvgData.jk;
