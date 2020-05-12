@@ -21,27 +21,24 @@ class _MapWidgetState extends State<MapWidget> {
 
   @override
   Widget build(BuildContext context) {
-    /// Calculate the center point of the SVG map,
-    /// use parent widget for width/heigth.
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    
+    return new LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints){
+      double width = constraints.minWidth;
+      double height = constraints.minHeight;
+      double x = (width / 2.0) - (MapSvgData.width / 2.0);
+      double y = (height / 2.0) - (MapSvgData.height / 2.0);
+      Offset offset = Offset(x, y);
+      double scaleFactor = 1.0;
+      //print("width = $width, height = $height, offset = ($x, $y)");
 
-    double navBarHeight =
-    Theme.of(context).platform == TargetPlatform.android ? 56.0 : 44.0;
-    double safeZoneHeight = MediaQuery.of(context).padding.bottom;
-
-    double scaleFactor = 0.5;
-
-    double x = (width / 2.0) - (MapSvgData.width / 2.0);
-    double y = (height / 2.0) - (MapSvgData.height / 2.0) - (safeZoneHeight / 2.0) - navBarHeight;
-    Offset offset = Offset(x, y);
-
-    return Scaffold(
-        body: SafeArea(
-            child: Transform.scale(
-                scale: ((height / MapSvgData.height)) * scaleFactor,
-                child: Transform.translate(
-                    offset: offset, child: Stack(children: _buildMap())))));
+      return Transform.scale(
+          scale: ((height / MapSvgData.height)) * scaleFactor,
+          child: Transform.translate(
+              offset: offset,
+              child: Stack(children: _buildMap())
+          )
+      );
+    });
   }
 
   List<Widget> _buildMap() {

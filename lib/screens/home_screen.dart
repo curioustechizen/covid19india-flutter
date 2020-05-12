@@ -6,32 +6,12 @@ import 'package:flutter/material.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
+    return ListView(
+
       padding: EdgeInsets.all(16.0),
-      child: Column(
+
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              SummaryCard(
-                summaryColor: kConfirmed,
-                data: SummaryData(title: "Confirmed", total: 67161, diff: 4296),
-              ),
-              SummaryCard(
-                summaryColor: kActive,
-                data: SummaryData(title: "Active", total: 43976, showDiff: false),
-              ),
-              SummaryCard(
-                summaryColor: kRecovered,
-                data: SummaryData(title: "Recovered", total: 20969, diff: 1668),
-              ),
-              SummaryCard(
-                summaryColor: kDeceased,
-                data: SummaryData(title: "Deceased", total: 2212, diff: 111),
-              ),
-            ],
-          ),
+          SummaryRow(),
           SizedBox(
             height: 16.0,
           ),
@@ -70,9 +50,10 @@ class HomeScreen extends StatelessWidget {
               child: MapWidget()
           ),
         ],
-      ),
     );
   }
+
+
 }
 
 class SummaryData {
@@ -83,6 +64,35 @@ class SummaryData {
 
   SummaryData({this.title, this.total, this.diff, this.showDiff = true});
 }
+
+class SummaryRow extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        SummaryCard(
+          summaryColor: kConfirmed,
+          data: SummaryData(title: "Confirmed", total: 67161, diff: 4296),
+        ),
+        SummaryCard(
+          summaryColor: kActive,
+          data: SummaryData(title: "Active", total: 43976, showDiff: false),
+        ),
+        SummaryCard(
+          summaryColor: kRecovered,
+          data: SummaryData(title: "Recovered", total: 20969, diff: 1668),
+        ),
+        SummaryCard(
+          summaryColor: kDeceased,
+          data: SummaryData(title: "Deceased", total: 2212, diff: 111),
+        ),
+      ],
+    );
+  }
+}
+
 
 class SummaryCard extends StatelessWidget {
   final Color summaryColor;
