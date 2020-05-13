@@ -40,19 +40,19 @@ final Map<StateUT, int> summaryStats = {
   StateUT.an: 33
 };
 
-final Map<int, int> historicalConfirmed = {
-  1: 29548,
-  2: 31362,
-  3: 33065,
-  4: 34866,
-  5: 37262,
-  6: 39826,
-  7: 42778,
-  8: 46434,
-  9: 49405,
-  10: 53007,
-  11: 56351,
-  12: 59690,
-  13: 62865,
-  14: 67161,
+final Map<DateTime, int> historicalConfirmed = {
+  DateTime(2020, 4, 27): 29548,
+  DateTime(2020, 4, 28): 31362,
+  DateTime(2020, 4, 29): 33065,
+  DateTime(2020, 4, 30): 34866,
+  DateTime(2020, 5, 1): 37262,
+  DateTime(2020, 5, 2): 39826,
+  DateTime(2020, 5, 3): 42778,
+  DateTime(2020, 5, 4): 46434,
+  DateTime(2020, 5, 5): 49405,
+  DateTime(2020, 5, 6): 53007,
+  DateTime(2020, 5, 7): 56351,
+  DateTime(2020, 5, 8): 59690,
+  DateTime(2020, 5, 9): 62865,
+  DateTime(2020, 5, 10): 67161,
 };

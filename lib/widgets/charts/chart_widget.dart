@@ -11,8 +11,9 @@ class PointsLineChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new charts.LineChart(_initChartSeries(),
+    return new charts.TimeSeriesChart(_initChartSeries(),
         animate: animate,
+        domainAxis: new charts.EndPointsTimeAxisSpec(),
         defaultRenderer: new charts.LineRendererConfig(
             includePoints: true,
             roundEndCaps: true,
@@ -21,9 +22,9 @@ class PointsLineChart extends StatelessWidget {
     );
   }
 
-  List<charts.Series<ChartPoint, int>> _initChartSeries() {
+  List<charts.Series<ChartPoint, DateTime>> _initChartSeries() {
     return [
-      charts.Series<ChartPoint, int>(
+      charts.Series<ChartPoint, DateTime>(
           id: 'Confirmed',
           data: chartPoints,
           domainFn: (ChartPoint pt, _) => pt.date,
@@ -35,7 +36,7 @@ class PointsLineChart extends StatelessWidget {
 }
 
 class ChartPoint {
-  final int date;
+  final DateTime date;
   final int count;
 
   ChartPoint({this.date, this.count});

@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: 320.0,
                 child: PointsLineChart(
                   historicalConfirmed.entries
-                      .map((MapEntry<int, int> e) =>
+                      .map((MapEntry<DateTime, int> e) =>
                           ChartPoint(date: e.key, count: e.value))
                       .toList(),
                   animate: true,

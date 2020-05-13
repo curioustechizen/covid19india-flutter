@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'Covid19India',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        splashFactory: InkRipple.splashFactory,
           canvasColor: kCanvasColor,
           brightness: Brightness.light,
           primarySwatch:
