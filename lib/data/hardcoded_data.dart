@@ -1,6 +1,6 @@
 import 'package:covid19in/widgets/maps/map_svg_data.dart';
 
-final Map<StateUT, int> statistics = {
+final Map<StateUT, int> summaryStats = {
   StateUT.jk: 861,
   StateUT.wb: 1939,
   StateUT.ut: 68,
@@ -38,4 +38,21 @@ final Map<StateUT, int> statistics = {
   StateUT.ar: 1,
   StateUT.ap: 1980,
   StateUT.an: 33
+};
+
+final Map<int, int> historicalConfirmed = {
+  1: 29548,
+  2: 31362,
+  3: 33065,
+  4: 34866,
+  5: 37262,
+  6: 39826,
+  7: 42778,
+  8: 46434,
+  9: 49405,
+  10: 53007,
+  11: 56351,
+  12: 59690,
+  13: 62865,
+  14: 67161,
 };
