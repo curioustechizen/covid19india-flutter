@@ -1,6 +1,5 @@
 import 'dart:math';
-
-import 'package:covid19in/data/category.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

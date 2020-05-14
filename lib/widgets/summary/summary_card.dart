@@ -1,4 +1,5 @@
-import 'package:covid19in/data/category.dart';
+
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 
 class SummaryData {

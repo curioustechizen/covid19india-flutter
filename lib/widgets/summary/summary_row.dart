@@ -1,5 +1,6 @@
-import 'package:covid19in/data/category.dart';
+
 import 'package:covid19in/widgets/summary/summary_card.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';

@@ -1,10 +1,10 @@
 import 'package:covid19in/constants.dart';
-import 'package:covid19in/data/category.dart';
 import 'package:covid19in/data/hardcoded_data.dart';
 import 'package:covid19in/widgets/charts/chart_widget.dart';
 import 'package:covid19in/widgets/maps/map_widget.dart';
 import 'package:covid19in/widgets/summary/summary_row.dart';
 import 'package:covid19in/widgets/zoomable.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {

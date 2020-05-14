@@ -1,7 +1,7 @@
-import 'package:covid19in/screens/credits_screen.dart';
-import 'package:covid19in/screens/home_screen.dart';
-import 'package:covid19in/widgets/app_drawer.dart';
-import 'package:covid19in/widgets/covid_header.dart';
+import 'screens/credits_screen.dart';
+import 'screens/home_screen.dart';
+import 'widgets/app_drawer.dart';
+import 'widgets/covid_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
