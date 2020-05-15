@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 class SummaryData {
   final String title;
   final Category category;
-  final int total;
-  final int diff;
+  final String total;
+  final String diff;
   final bool showDiff;
   final bool isSelected;
 
