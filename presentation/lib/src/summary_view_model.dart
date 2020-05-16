@@ -1,6 +1,5 @@
 import 'package:domain/domain.dart';
 import 'package:meta/meta.dart';
-import 'package:presentation/presentation.dart';
 import 'package:rxdart/rxdart.dart';
 
 class SummaryState {
@@ -47,13 +46,15 @@ class SummaryViewModel {
     else if(action is InitAction) {
       getSummaryUseCase.invoke(
           Empty(),
-              (Map<Category, SummaryInfo> success) => _emit(_mapToUiState(success)),
+              (Map<Category, SummaryInfo> success) => _emit( _mapToUiState(success)),
               (Failure failure) => _emit(_getErrorState()));
     }
+
 
   }
 
   SummaryState _mapToUiState(Map<Category, SummaryInfo> success) {
+    print('_mapToUiState($success)');
     return SummaryState(
         selectedCategory: _uiState.selectedCategory,
         summaryItems: _mapToSummaryItemState(success));
@@ -61,8 +62,9 @@ class SummaryViewModel {
 
   Map<Category, SummaryItemState> _mapToSummaryItemState(
       Map<Category, SummaryInfo> success) {
-    return Map.fromIterable(success.entries.map((e) =>
-        MapEntry<Category, SummaryItemState>(e.key, _entryToSummaryItem(e))));
+    return Map.fromEntries(success.entries.map((e) =>
+        MapEntry<Category, SummaryItemState>(e.key, _entryToSummaryItem(e)))) ;
+
   }
 
   SummaryItemState _entryToSummaryItem(MapEntry<Category, SummaryInfo> entry) {
