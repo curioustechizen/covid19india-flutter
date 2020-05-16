@@ -1,14 +1,17 @@
-import 'package:covid19in/data/category.dart';
+
 import 'package:covid19in/widgets/summary/summary_card.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:presentation/presentation.dart';
 
 import '../../constants.dart';
 
 class SummaryRow extends StatelessWidget {
   final Function onCategorySelected;
   final Category selectedCategory;
+  final Map<Category, SummaryItemState> summaryInfo;
 
-  const SummaryRow({this.onCategorySelected, this.selectedCategory});
+  const SummaryRow({@required this.onCategorySelected, @required this.selectedCategory, @required this.summaryInfo});
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +24,10 @@ class SummaryRow extends StatelessWidget {
             onCategorySelected(Category.confirmed);
           },
           data: SummaryData(
-              title: "Confirmed",
+              title: summaryInfo[Category.confirmed].title,
               category: Category.confirmed,
-              total: 67161,
-              diff: 4296,
+              total: summaryInfo[Category.confirmed].total,
+              diff: summaryInfo[Category.confirmed].diff,
               isSelected: selectedCategory == Category.confirmed),
         ),
         SummaryCard(
@@ -33,10 +36,10 @@ class SummaryRow extends StatelessWidget {
             onCategorySelected(Category.active);
           },
           data: SummaryData(
-              title: "Active",
+              title: summaryInfo[Category.active].title,
               category: Category.active,
-              total: 43976,
-              showDiff: false,
+              total: summaryInfo[Category.active].total,
+              diff: summaryInfo[Category.active].diff,
               isSelected: selectedCategory == Category.active),
         ),
         SummaryCard(
@@ -45,10 +48,10 @@ class SummaryRow extends StatelessWidget {
             onCategorySelected(Category.recovered);
           },
           data: SummaryData(
-              title: "Recovered",
+              title: summaryInfo[Category.recovered].title,
               category: Category.recovered,
-              total: 20969,
-              diff: 1668,
+              total: summaryInfo[Category.recovered].total,
+              diff: summaryInfo[Category.recovered].diff,
               isSelected: selectedCategory == Category.recovered),
         ),
         SummaryCard(
@@ -57,10 +60,10 @@ class SummaryRow extends StatelessWidget {
             onCategorySelected(Category.deceased);
           },
           data: SummaryData(
-              title: "Deceased",
+              title: summaryInfo[Category.deceased].title,
               category: Category.deceased,
-              total: 2212,
-              diff: 111,
+              total: summaryInfo[Category.deceased].total,
+              diff: summaryInfo[Category.deceased].diff,
               isSelected: selectedCategory == Category.deceased),
         ),
       ],

@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:covid19in/constants.dart';
-import 'package:covid19in/data/category.dart';
+import 'package:domain/domain.dart';
 ///
 /// Created by Giovanni Terlingen
 /// See LICENSE file for more information.
