@@ -53,7 +53,7 @@ class SummaryCard extends StatelessWidget {
                     .copyWith(color: summaryColor),
                 children: <InlineSpan>[
                   TextSpan(
-                      text: data.showDiff ? "[+${data.diff}]\n" : "\n",
+                      text: data.showDiff ? "${data.diff}\n" : "\n",
                       style: Theme.of(context)
                           .textTheme
                           .caption

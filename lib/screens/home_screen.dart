@@ -69,22 +69,22 @@ class HomeScreen extends StatelessWidget {
                     statistics: summaryStats,
                   ),
                 )),
-            DecoratedBox(
-              decoration: BoxDecoration(color: kConfirmed.withAlpha(32), borderRadius: BorderRadius.circular(4.0)),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                    height: 160.0,
-                    width: 320.0,
-                    child: PointsLineChart(
-                      historicalConfirmed.entries
-                          .map((MapEntry<DateTime, int> e) =>
-                              ChartPoint(date: e.key, count: e.value))
-                          .toList(),
-                      animate: true,
-                    )),
-              ),
-            )
+//            DecoratedBox(
+//              decoration: BoxDecoration(color: kConfirmed.withAlpha(32), borderRadius: BorderRadius.circular(4.0)),
+//              child: Padding(
+//                padding: const EdgeInsets.all(8.0),
+//                child: Container(
+//                    height: 160.0,
+//                    width: 320.0,
+//                    child: PointsLineChart(
+//                      historicalConfirmed.entries
+//                          .map((MapEntry<DateTime, int> e) =>
+//                              ChartPoint(date: e.key, count: e.value))
+//                          .toList(),
+//                      animate: true,
+//                    )),
+//              ),
+//            )
           ],
         );
       }

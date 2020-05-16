@@ -72,7 +72,7 @@ class SummaryViewModel {
         total: entry.value.total.toString(),
         diff: entry.key == Category.active
             ? ""
-            : entry.value.deltaToday.toString(),
+            : "[+${entry.value.deltaToday}]",
         title: entry.key.title);
   }
 
