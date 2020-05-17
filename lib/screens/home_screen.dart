@@ -32,34 +32,7 @@ class HomeScreen extends StatelessWidget {
               }
             ),
             SizedBox(
-              height: 16.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "Total",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline6
-                      .copyWith(color: kConfirmed, fontWeight: FontWeight.bold),
-                ),
-                RichText(
-                  textAlign: TextAlign.end,
-                  text: TextSpan(
-                      text: "Last updated\n",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText2
-                          .copyWith(color: kRecovered),
-                      children: <InlineSpan>[
-                        TextSpan(
-                            text: "about 2 hours ago",
-                            style: Theme.of(context).textTheme.subtitle1.copyWith(
-                                color: kRecovered, fontWeight: FontWeight.w600))
-                      ]),
-                )
-              ],
+              height: 32.0,
             ),
             StreamBuilder<StateLevelState>(
               stream: _mapStateLevelViewModel.uiState,
