@@ -4,17 +4,33 @@ import 'package:domain/domain.dart';
 import 'package:http/http.dart' as http;
 import 'package:either_option/either_option.dart';
 
+final kJsonKeysMapTotal = {
+  Category.confirmed: 'cases',
+  Category.recovered: 'recovered',
+  Category.active: 'active',
+  Category.deceased: 'deaths'
+};
+
+final kJsonKeysMapToday = {
+  Category.confirmed: 'todayCases',
+  Category.recovered: 'todayRecovered',
+  Category.deceased: 'todayDeaths'
+};
+
 class SummaryRepositoryImpl extends SummaryRepository {
+
+  final _url = 'https://covidstat.info/graphql';
+
   @override
   Future<Either<Failure, Map<Category, SummaryInfo>>> getSummary() async {
-    final url = 'https://covidstat.info/graphql';
+    
     final bodyObject = {
       'query': 'query {\n  country(name: \"India\") {\n    country\n    cases\n    deaths\n    recovered\n    todayCases\n    todayDeaths\n    active\n    historical(count: 1, reverse: true) {\n      todayRecovered\n    }\n  }\n}'
     };
 
     try {
       final networkResponse = await http
-          .post(url, headers: {'Content-Type': 'application/json'}, body: jsonEncode(bodyObject));
+          .post(_url, headers: {'Content-Type': 'application/json'}, body: jsonEncode(bodyObject));
       if(networkResponse.statusCode == 200) {
         return Right(_parseSummaryResponse(networkResponse.body));
       } else {
@@ -34,5 +50,42 @@ class SummaryRepositoryImpl extends SummaryRepository {
       Category.deceased: SummaryInfo(info['deaths'], info['todayDeaths']),
     };
   }
+
+  @override
+  Future<Either<Failure, Map<StateUT, SummaryInfo>>> getStateLevelDetails(Category category) async {
+    final bodyObject = {
+      'query': 'query {\n  country(name: \"India\") {\n    states {\n      state\n      ${kJsonKeysMapTotal[category] ?? ''}\n      ${kJsonKeysMapToday[category] ?? ''}\n    }\n  }\n}'
+    };
+
+    try {
+      final networkResponse = await http
+          .post(_url, headers: {'Content-Type': 'application/json'}, body: jsonEncode(bodyObject));
+      if(networkResponse.statusCode == 200) {
+        return Right(_parseStateLevelDetails(networkResponse.body, category));
+      } else {
+        return Left(NetworkFailure('Response code: ${networkResponse.statusCode}, body = ${networkResponse.body}', null));
+      }
+    } catch (e) {
+      return Left(NetworkFailure('Network failure', e));
+    }
+  }
+
+  Map<StateUT, SummaryInfo> _parseStateLevelDetails(String body, Category category) {
+    final info = json.decode(body)['data']['country']['states'];
+    final stateInfoMap = { for (var item in info) item['state']: _stateInfoToSummaryInfo(item, category) };
+    return kStateNamesMap.map((k, v) {
+      if(stateInfoMap.containsKey(v)) {
+        return MapEntry(k, stateInfoMap[v]);
+      } else {
+        return MapEntry(k, SummaryInfo(-1, -1)); //TODO: Better way to handle errors here
+      }
+    });
+  }
+
+  SummaryInfo _stateInfoToSummaryInfo(Map<String, dynamic> stateInfo, Category category) {
+    return SummaryInfo(stateInfo[kJsonKeysMapTotal[category]], category == Category.active ? -1 : stateInfo[kJsonKeysMapToday[category]]);
+  }
 }
+
+
 

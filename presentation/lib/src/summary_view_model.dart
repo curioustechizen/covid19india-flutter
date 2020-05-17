@@ -1,6 +1,6 @@
 import 'package:domain/domain.dart';
 import 'package:meta/meta.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:presentation/src/base_view_model.dart';
 
 class SummaryState {
   final Map<Category, SummaryItemState> summaryItems;
@@ -27,36 +27,32 @@ class CategoryTappedAction implements SummaryAction {
 
 class InitAction implements SummaryAction{}
 
-class SummaryViewModel {
-  SummaryState _uiState;
-  final BehaviorSubject<SummaryState> uiState;
+class SummaryViewModel extends BaseViewModel<SummaryState, SummaryAction> {
   final GetSummaryUseCase getSummaryUseCase;
 
   SummaryViewModel(
       {@required SummaryState initialState, @required this.getSummaryUseCase})
-      : this._uiState = initialState,
-        uiState = BehaviorSubject.seeded(initialState) {
+      : super(initialState: initialState) {
     dispatchAction(InitAction());
   }
 
-  void dispatchAction(SummaryAction action) {
+  @override void dispatchAction(SummaryAction action) {
     if(action is CategoryTappedAction) {
-      _emit(SummaryState(summaryItems: this._uiState.summaryItems, selectedCategory: action.tappedCategory));
+      emit(SummaryState(summaryItems: this.currentState.summaryItems, selectedCategory: action.tappedCategory));
     }
     else if(action is InitAction) {
       getSummaryUseCase.invoke(
           Empty(),
-              (Map<Category, SummaryInfo> success) => _emit( _mapToUiState(success)),
-              (Failure failure) => _emit(_getErrorState()));
+              (Map<Category, SummaryInfo> success) => emit( _mapToUiState(success)),
+              (Failure failure) => emit(_getErrorState()));
     }
 
 
   }
 
   SummaryState _mapToUiState(Map<Category, SummaryInfo> success) {
-    print('_mapToUiState($success)');
     return SummaryState(
-        selectedCategory: _uiState.selectedCategory,
+        selectedCategory: currentState.selectedCategory,
         summaryItems: _mapToSummaryItemState(success));
   }
 
@@ -74,11 +70,6 @@ class SummaryViewModel {
             ? ""
             : "[+${entry.value.deltaToday}]",
         title: entry.key.title);
-  }
-
-  void _emit(SummaryState state) {
-    _uiState = state;
-    uiState.sink.add(state);
   }
 
   SummaryState _getErrorState() {
