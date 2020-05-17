@@ -6,47 +6,9 @@ import 'dart:ui';
 
 import 'package:built_path_annotations/built_path_annotations.dart';
 import 'package:covid19in/constants.dart';
+import 'package:domain/domain.dart';
 part 'map_svg_data.svg_path.g.dart';
 
-enum StateUT {
-  jk,
-  wb,
-  ut,
-  up,
-  tr,
-  tn,
-  tg,
-  sk,
-  rj,
-  py,
-  pb,
-  or,
-  nl,
-  mz,
-  mp,
-  mn,
-  ml,
-  mh,
-  ld,
-  kl,
-  ka,
-  lk,
-  jh,
-  hr,
-  hp,
-  gj,
-  ga,
-  dn,
-  dl,
-  dd,
-  ct,
-  ch,
-  br,
-  as,
-  ar,
-  ap,
-  an
-}
 
 Path getPathByRegion(StateUT region) {
   switch (region) {

@@ -1,5 +1,6 @@
 import 'package:data/data.dart';
 import 'package:domain/domain.dart';
+import 'package:flutter/gestures.dart';
 import 'package:presentation/presentation.dart';
 
 import 'screens/credits_screen.dart';
@@ -17,12 +18,16 @@ void main() {
   runApp(MyApp());
 }
 
+final SummaryInfo _emptySummaryInfo = SummaryInfo(0, 0);
+final Map<StateUT, SummaryInfo> _emptyStateLevelDetails = {for(var state in StateUT.values) state:_emptySummaryInfo};
+
 class _ModuleContainer {
   Injector init(Injector injector) {
     injector.map<SummaryRepository>((injector) => SummaryRepositoryImpl(),
         isSingleton: true);
     injector.map<GetSummaryUseCase>(
         (injector) => GetSummaryUseCase(injector.get<SummaryRepository>()), isSingleton: true);
+    injector.map<GetStateLevelUseCase>((injector) => GetStateLevelUseCase(injector.get<SummaryRepository>()), isSingleton: true);
     injector.map<SummaryViewModel>((injector) => SummaryViewModel(
         getSummaryUseCase: injector.get<GetSummaryUseCase>(),
         initialState:
@@ -36,6 +41,13 @@ class _ModuleContainer {
           Category.deceased:
               SummaryItemState(title: "Deceased", total: "-", diff: "-"),
         })));
+
+    injector.map<MapStateLevelViewModel>((injector) => MapStateLevelViewModel(
+      getStateLevelUseCase: injector.get<GetStateLevelUseCase>(),
+      initialState: StateLevelState(
+        Category.confirmed, _emptyStateLevelDetails
+      )
+    ));
 
     return injector;
   }

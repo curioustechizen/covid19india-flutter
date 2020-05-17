@@ -13,18 +13,22 @@ import 'map_svg_data.dart';
 
 
 class MapWidget extends StatefulWidget {
-  final Map<StateUT, int> statistics;
+  final Map<StateUT, SummaryInfo> statistics;
   final Category category;
+  final _maxCount;
 
-  MapWidget({Key key, this.statistics, this.category}): super(key: key);
+  MapWidget({Key key, this.statistics, this.category}): this._maxCount =_calculateMaxCount(statistics), super(key: key);
 
   @override
   _MapWidgetState createState() => _MapWidgetState();
+
+  static int _calculateMaxCount(Map<StateUT, SummaryInfo> statistics) {
+    return statistics.values.map((SummaryInfo e) => e.total).reduce(max);
+  }
 }
 
 class _MapWidgetState extends State<MapWidget> {
   StateUT _pressedProvince;
-
 
   _MapWidgetState();
 
@@ -57,6 +61,7 @@ class _MapWidgetState extends State<MapWidget> {
   }
 
   Widget _buildRegion(StateUT region) {
+    var statistic = widget.statistics[region];
     return ClipPath(
         clipBehavior: Clip.antiAlias,
         child: Stack(children: <Widget>[
@@ -64,7 +69,7 @@ class _MapWidgetState extends State<MapWidget> {
               child: InkWell(
                   onTap: () => _regionPressed(region),
                   child: Container(
-                      color: getColorForStatGradient(widget.statistics[region], widget.category)
+                      color: _getColorForStatGradient(statistic.total, widget.category, widget._maxCount)
                   ))),
           CustomPaint(painter: PathPainter(region, _pressedProvince == region, widget.category))
         ]),
@@ -88,7 +93,7 @@ class PathPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     Path path = getPathByRegion(_province);
 
-    var baseColor = getBaseColorForCategory(_category);
+    var baseColor = _getBaseColorForCategory(_category);
     canvas.drawPath(
         path,
         Paint()
@@ -117,19 +122,21 @@ class PathClipper extends CustomClipper<Path> {
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
 
-Color getColorForStatGradient(int count, Category category) {
+Color _getColorForStatGradient(int count, Category category, int maxCount) {
 
+  //print('_getColorForStatGradient($count, $category, $maxCount)');
   final colors = colorGradientMap[category];
   final start = colors[0];
   final end = colors[1];
 
 
-  final fraction = count.toDouble() / getMaxCountForCategory(category);
+  final fraction = count.toDouble() / max(maxCount, 1) ;
   final adjusted = min(max(fraction, 0.05), 0.95);
+  //print('fraction = $fraction')
   return Color.lerp(start, end, adjusted);
 }
 
-Color getBaseColorForCategory(Category category) {
+Color _getBaseColorForCategory(Category category) {
   switch(category) {
     case Category.confirmed:
       return kConfirmed;
@@ -142,20 +149,4 @@ Color getBaseColorForCategory(Category category) {
     case Category.tested:
       return kTested;
   }
-}
-
-int getMaxCountForCategory(Category category) {
-//  switch(category) {
-//    case Category.confirmed:
-//      return 25000;
-//    case Category.active:
-//      return 20000;
-//    case Category.recovered:
-//      return 4000;
-//    case Category.deceased:
-//      return 1000;
-//    case Category.tested:
-//      return 250000;
-//  }
-return 25000;
 }
