@@ -2,6 +2,10 @@
 
 Inspired by https://www.covid19india.org/ which is an [open source](https://github.com/covid19india/covid19india-react) React App.
 
+### Contributions Welcome
+
+If you would like to contribute, please first discuss with me (either as comments on existing issues, or by opening a new issue).
+
 ## Screenshots
 
 ![Home Screen](screenshots/Covid19IndiaFlutter.png)
@@ -18,6 +22,10 @@ If this command fails, first do
 ```bash
 flutter packages pub upgrade
 ```
+
+## Downloading
+
+I do not intend to publish this app on any of the stores. I do hope to provide downloadable APKs in the future though.
 
 ## Credits
 
