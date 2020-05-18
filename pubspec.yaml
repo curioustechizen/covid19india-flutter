@@ -44,6 +44,7 @@ dependencies:
   flutter_simple_dependency_injection: ^1.0.2
   meta: ^1.1.8
   url_launcher: ^5.4.7
+  flutter_staggered_animations: "^0.1.2"
 
 
 dev_dependencies:

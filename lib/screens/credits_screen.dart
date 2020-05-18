@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class CreditsScreen extends StatelessWidget {
   @override
@@ -55,31 +56,38 @@ class CreditsSection extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final linkTextStyle = textTheme.bodyText1.copyWith(
         color: themeData.primaryColor, decoration: TextDecoration.underline);
-    return Column(
-      children: <Widget>[
-        ListTile(
-            title: Text(
-          data.title,
-          style: textTheme.headline5.copyWith(
-            backgroundColor: kDrawerSelectedColor.withAlpha(20),
-          ),
-        )),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              if (data.link != null)
-                GestureDetector(
-                    onTap: () {
-                      _launchInBrowser(data.link);
-                    },
-                    child: Text(data.link, style: linkTextStyle)),
-              for (var point in data.bulletPoints) Text(point),
-            ],
-          ),
+    return SingleChildScrollView(
+      child: AnimationLimiter(
+        child: Column(
+          children: AnimationConfiguration.toStaggeredList(
+            duration: const Duration(milliseconds: 550),
+              childAnimationBuilder: (widget) => SlideAnimation(verticalOffset: 16.0, child: FadeInAnimation(child: widget,),), children: <Widget>[
+            ListTile(
+                title: Text(
+              data.title,
+              style: textTheme.headline5.copyWith(
+                backgroundColor: kDrawerSelectedColor.withAlpha(20),
+              ),
+            )),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  if (data.link != null)
+                    GestureDetector(
+                        onTap: () {
+                          _launchInBrowser(data.link);
+                        },
+                        child: Text(data.link, style: linkTextStyle)),
+                  for (var point in data.bulletPoints) Text(point),
+                ],
+              ),
+            )
+          ],
+        ),
         )
-      ],
+      ),
     );
   }
 
