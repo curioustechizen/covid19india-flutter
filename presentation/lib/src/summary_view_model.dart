@@ -1,31 +1,31 @@
 import 'package:domain/domain.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:presentation/src/base_view_model.dart';
 
-class SummaryState {
-  final Map<Category, SummaryItemState> summaryItems;
-  final Category selectedCategory;
+part 'summary_view_model.freezed.dart';
 
-  SummaryState({@required this.summaryItems, @required this.selectedCategory});
+@freezed
+abstract class SummaryState with _$SummaryState {
+  const factory SummaryState({
+    @required Map<Category, SummaryItemState> summaryItems,
+    @required Category selectedCategory}) = _SummaryState;
 }
 
-class SummaryItemState {
-  final String title;
-  final String total;
-  final String diff;
-
-  SummaryItemState(
-      {@required this.title, @required this.total, @required this.diff});
+@freezed
+abstract class SummaryItemState with _$SummaryItemState {
+  const factory SummaryItemState({
+    @required String title,
+    @required String total,
+    @required String diff}) = _SummaryItemState;
 }
 
-abstract class SummaryAction {}
-
-class CategoryTappedAction implements SummaryAction {
-  final Category tappedCategory;
-  CategoryTappedAction(this.tappedCategory);
+@freezed
+abstract class SummaryAction with _$SummaryAction {
+  const factory SummaryAction.categoryTapped(Category category) =
+      _CategoryTapped;
+  const factory SummaryAction.init() = _SummaryActionInit;
 }
-
-class InitAction implements SummaryAction{}
 
 class SummaryViewModel extends BaseViewModel<SummaryState, SummaryAction> {
   final GetSummaryUseCase getSummaryUseCase;
@@ -33,42 +33,35 @@ class SummaryViewModel extends BaseViewModel<SummaryState, SummaryAction> {
   SummaryViewModel(
       {@required SummaryState initialState, @required this.getSummaryUseCase})
       : super(initialState: initialState) {
-    dispatchAction(InitAction());
+    dispatchAction(SummaryAction.init());
   }
 
-  @override void dispatchAction(SummaryAction action) {
-    if(action is CategoryTappedAction) {
-      emit(SummaryState(summaryItems: this.currentState.summaryItems, selectedCategory: action.tappedCategory));
-    }
-    else if(action is InitAction) {
-      getSummaryUseCase.invoke(
-          Empty(),
-              (Map<Category, SummaryInfo> success) => emit( _mapToUiState(success)),
-              (Failure failure) => emit(_getErrorState()));
-    }
-
-
+  @override
+  void dispatchAction(SummaryAction action) {
+    action.when(
+        categoryTapped: (category) => emit(this.currentState.copyWith(selectedCategory: category)),
+        init: () => getSummaryUseCase.invoke(
+            Empty(),
+            (Map<Category, SummaryInfo> success) =>
+                emit(_mapToUiState(success)),
+            (Failure failure) => emit(_getErrorState())));
   }
 
   SummaryState _mapToUiState(Map<Category, SummaryInfo> success) {
-    return SummaryState(
-        selectedCategory: currentState.selectedCategory,
-        summaryItems: _mapToSummaryItemState(success));
+    return this.currentState.copyWith(summaryItems: _mapToSummaryItemState(success));
   }
 
   Map<Category, SummaryItemState> _mapToSummaryItemState(
       Map<Category, SummaryInfo> success) {
     return Map.fromEntries(success.entries.map((e) =>
-        MapEntry<Category, SummaryItemState>(e.key, _entryToSummaryItem(e)))) ;
-
+        MapEntry<Category, SummaryItemState>(e.key, _entryToSummaryItem(e))));
   }
 
   SummaryItemState _entryToSummaryItem(MapEntry<Category, SummaryInfo> entry) {
     return SummaryItemState(
         total: entry.value.total.toString(),
-        diff: entry.key == Category.active
-            ? ""
-            : "[+${entry.value.deltaToday}]",
+        diff:
+            entry.key == Category.active ? "" : "[+${entry.value.deltaToday}]",
         title: entry.key.title);
   }
 

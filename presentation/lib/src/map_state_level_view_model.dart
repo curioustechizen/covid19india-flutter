@@ -1,32 +1,32 @@
 import 'package:domain/domain.dart';
 import 'package:flutter/foundation.dart' hide Category;
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:presentation/src/base_view_model.dart';
 
-class StateLevelState {
-  final Category selectedCategory;
-  final Map<StateUT, SummaryInfo> stateLevelInfo;
+part 'map_state_level_view_model.freezed.dart';
 
-  StateLevelState(this.selectedCategory, this.stateLevelInfo);
-
+@freezed
+abstract class StateLevelState with _$StateLevelState {
+  const factory StateLevelState({
+    @required Category selectedCategory,
+    @required Map<StateUT, SummaryInfo> stateLevelInfo}) = _StateLevelState;
 }
 
-abstract class StateLevelAction {}
-
-class StateLevelInitAction implements StateLevelAction {}
-
-class StateLevelSelectCategoryAction implements StateLevelAction {
-  final Category category;
-  StateLevelSelectCategoryAction(this.category);
+@freezed
+abstract class StateLevelAction with _$StateLevelAction {
+  const factory StateLevelAction.init() = _StateLevelActionInit;
+  const factory StateLevelAction.selectCategory(Category category) = _SelectCategory;
 }
 
 class MapStateLevelViewModel
     extends BaseViewModel<StateLevelState, StateLevelAction> {
   final GetStateLevelUseCase getStateLevelUseCase;
 
-  MapStateLevelViewModel(
-      {@required StateLevelState initialState, @required this.getStateLevelUseCase})
-      : super(initialState: initialState) {
-    dispatchAction(StateLevelInitAction());
+  MapStateLevelViewModel({
+    @required StateLevelState initialState,
+    @required this.getStateLevelUseCase
+  }) : super(initialState: initialState) {
+    dispatchAction(StateLevelAction.init());
   }
 
   @override
@@ -35,25 +35,28 @@ class MapStateLevelViewModel
         emit(_mapToUiState(success));
     var stateLevelInfoFailure = (Failure failure) =>
         emit(_mapToUiStateFailure(failure));
-    if (action is StateLevelInitAction) {
-      getStateLevelUseCase.invoke(
-          currentState.selectedCategory,
-          stateLevelInfoSuccess,
-          stateLevelInfoFailure
-      );
-    } else if (action is StateLevelSelectCategoryAction) {
-      emit(StateLevelState(action.category, currentState.stateLevelInfo));
-      getStateLevelUseCase.invoke(
-          action.category, stateLevelInfoSuccess, stateLevelInfoFailure);
-    }
+
+    action.when(
+        init: () =>
+            getStateLevelUseCase.invoke(
+                currentState.selectedCategory,
+                stateLevelInfoSuccess,
+                stateLevelInfoFailure
+            ),
+        selectCategory: (category) {
+          emit(this.currentState.copyWith(selectedCategory: category));
+          getStateLevelUseCase.invoke(
+              category, stateLevelInfoSuccess, stateLevelInfoFailure);
+        }
+    );
   }
 
   StateLevelState _mapToUiState(Map<StateUT, SummaryInfo> success) {
-    return StateLevelState(currentState.selectedCategory, success);
+    return this.currentState.copyWith(stateLevelInfo: success);
   }
 
   StateLevelState _mapToUiStateFailure(Failure failure) {
     final empty = { for(var state in StateUT.values) state: SummaryInfo(0, 0)};
-    return StateLevelState(currentState.selectedCategory, empty);
+    return this.currentState.copyWith(stateLevelInfo: empty);
   }
 }

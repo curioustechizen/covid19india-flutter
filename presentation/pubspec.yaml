@@ -14,10 +14,13 @@ dependencies:
     path: ../domain
   meta: ^1.1.8
   rxdart: ^0.24.0
+  freezed_annotation: ^0.7.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner:
+  freezed: ^0.10.8
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
