@@ -1,13 +1,12 @@
-
 import 'package:covid19in/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import '../constants.dart';
 import 'covid_header.dart';
 
 class AppDrawer extends StatelessWidget {
-
   final CurrentScreen currentScreen;
   final Function onDrawerItemSelected;
 
@@ -18,62 +17,85 @@ class AppDrawer extends StatelessWidget {
       title,
       style: listItemStyle.copyWith(
           color: isSelected ? kDrawerSelectedColor : kDrawerTextcolor,
-          backgroundColor: isSelected ? kDrawerSelectedColor.withAlpha(20)  : kCanvasColor
-      ),
-
+          backgroundColor:
+              isSelected ? kDrawerSelectedColor.withAlpha(20) : kCanvasColor),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     var themeData = Theme.of(context);
-    var listItemStyle =
-        themeData.textTheme.headline6;
+    var listItemStyle = themeData.textTheme.headline6;
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            decoration: BoxDecoration(color: themeData.primaryColorLight),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Covid19Header(),
-              ],
-            ),
-          ),
-          ListTile(
-            title: buildDrawerItem(listItemStyle, "Home", currentScreen == CurrentScreen.homeScreen),
-            onTap: () {
-              onDrawerItemSelected(CurrentScreen.homeScreen);
-            },
-          ),
-          ListTile(
-            title: buildDrawerItem(listItemStyle, "Credits", currentScreen == CurrentScreen.creditsScreen),
-            onTap: () {
-              onDrawerItemSelected(CurrentScreen.creditsScreen);
-            },
-          ),
-          ListTile(
-            enabled: false,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "Dark Mode",
-                  style: themeData.textTheme.headline6
-                      .copyWith(color: kDrawerTextcolor.withAlpha(127)),
-                ),
-                Switch(
-                  value: false,
-                  onChanged: (bool changed){},
-                )
-              ],
-            ),
-          )
-        ],
+      child: AnimationLimiter(
+        child: ListView.builder(
+          itemCount: 4,
+          padding: EdgeInsets.zero,
+          itemBuilder: (context, index) {
+            return AnimationConfiguration.staggeredList(
+                position: index,
+                duration: const Duration(milliseconds: 300),
+                child: SlideAnimation(
+                  verticalOffset: 48.0,
+                  child: FadeInAnimation(
+                    child:
+                        _getDrawerItemForIndex(themeData, listItemStyle, index),
+                  ),
+                ));
+          },
+        ),
       ),
     );
+  }
+
+  Widget _getDrawerItemForIndex(
+      ThemeData themeData, TextStyle listItemStyle, int index) {
+    switch (index) {
+      case 0:
+        return DrawerHeader(
+          decoration: BoxDecoration(color: themeData.primaryColorLight),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Covid19Header(),
+            ],
+          ),
+        );
+      case 1:
+        return ListTile(
+          title: buildDrawerItem(
+              listItemStyle, "Home", currentScreen == CurrentScreen.homeScreen),
+          onTap: () {
+            onDrawerItemSelected(CurrentScreen.homeScreen);
+          },
+        );
+      case 2:
+        return ListTile(
+          title: buildDrawerItem(listItemStyle, "Credits",
+              currentScreen == CurrentScreen.creditsScreen),
+          onTap: () {
+            onDrawerItemSelected(CurrentScreen.creditsScreen);
+          },
+        );
+      case 3:
+        return ListTile(
+          enabled: false,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                "Dark Mode",
+                style: themeData.textTheme.headline6
+                    .copyWith(color: kDrawerTextcolor.withAlpha(127)),
+              ),
+              Switch(
+                value: false,
+                onChanged: (bool changed) {},
+              )
+            ],
+          ),
+        );
+    }
   }
 }
