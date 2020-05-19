@@ -1,17 +1,15 @@
 import 'package:data/data.dart';
 import 'package:domain/domain.dart';
-import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter_simple_dependency_injection/injector.dart';
 import 'package:presentation/presentation.dart';
 
+import './constants.dart';
 import 'screens/credits_screen.dart';
 import 'screens/home_screen.dart';
 import 'widgets/app_drawer.dart';
 import 'widgets/covid_header.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import './constants.dart';
-
-import 'package:flutter_simple_dependency_injection/injector.dart';
 
 void main() {
   final injector = _ModuleContainer().init(Injector.getInjector());
@@ -45,7 +43,7 @@ class _ModuleContainer {
     injector.map<MapStateLevelViewModel>((injector) => MapStateLevelViewModel(
       getStateLevelUseCase: injector.get<GetStateLevelUseCase>(),
       initialState: StateLevelState(
-        Category.confirmed, _emptyStateLevelDetails
+        selectedCategory: Category.confirmed, stateLevelInfo: _emptyStateLevelDetails
       )
     ));
 
