@@ -32,20 +32,24 @@ class SummaryViewModel extends BaseViewModel<SummaryState, SummaryAction> {
 
   SummaryViewModel(
       {@required SummaryState initialState, @required this.getSummaryUseCase})
-      : super(initialState: initialState) {
+      : super(initialState: initialState);
+
+  @override
+  void onInit() {
+    super.onInit();
     dispatchAction(SummaryAction.init());
   }
 
   @override
-  void dispatchAction(SummaryAction action) {
-    action.when(
-        categoryTapped: (category) => emit(this.currentState.copyWith(selectedCategory: category)),
-        init: () => getSummaryUseCase.invoke(
-            Empty(),
-            (Map<Category, SummaryInfo> success) =>
-                emit(_mapToUiState(success)),
-            (Failure failure) => emit(_getErrorState())));
-  }
+  Function(SummaryAction action) get actionProcessor => (action){
+      action.when(
+          categoryTapped: (category) => emit(this.currentState.copyWith(selectedCategory: category)),
+          init: () => getSummaryUseCase.invoke(
+              Empty(),
+                  (Map<Category, SummaryInfo> success) =>
+                  emit(_mapToUiState(success)),
+                  (Failure failure) => emit(_getErrorState())));
+    };
 
   SummaryState _mapToUiState(Map<Category, SummaryInfo> success) {
     return this.currentState.copyWith(summaryItems: _mapToSummaryItemState(success));

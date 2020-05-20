@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
           padding: EdgeInsets.all(16.0),
           children: <Widget>[
             StreamBuilder<SummaryState>(
-              stream: _summaryViewModel.uiState,
+              stream: _summaryViewModel.uiState.distinct(), //TODO: the distinct should move to ViewModel implementation
               builder: (context, snapshot) {
                 return !snapshot.hasData ? CircularProgressIndicator() :
                  SummaryRow(
@@ -35,7 +35,7 @@ class HomeScreen extends StatelessWidget {
               height: 32.0,
             ),
             StreamBuilder<StateLevelState>(
-              stream: _mapStateLevelViewModel.uiState,
+              stream: _mapStateLevelViewModel.uiState.distinct(), //TODO: the distinct should move to ViewModel implementation
               builder: (context, snapshot) {
                 return !snapshot.hasData ? CircularProgressIndicator() : Container(
                     height: kMapSvgHeight * 1.1,
