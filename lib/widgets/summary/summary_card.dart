@@ -35,7 +35,10 @@ class SummaryCard extends StatelessWidget {
     final List<BoxShadow> boxShadows = data.isSelected ? [BoxShadow(color: summaryColor.withOpacity(0.2), blurRadius: 8.0, offset: new Offset(0.0, 4.0))] : [];
     return InkWell(
       onTap: onSelected,
-      child: DecoratedBox(
+      borderRadius: BorderRadius.circular(8.0),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 350),
+        curve: Curves.easeInOut,
         decoration: BoxDecoration(
             color: data.isSelected
                 ? summaryColor.withAlpha(32)
