@@ -1,4 +1,5 @@
 
+import 'package:covid19in/constants.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +38,7 @@ class SummaryCard extends StatelessWidget {
       onTap: onSelected,
       borderRadius: BorderRadius.circular(8.0),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 350),
+        duration: kAnimationDurationLong,
         curve: Curves.easeInOut,
         decoration: BoxDecoration(
             color: data.isSelected

@@ -68,7 +68,9 @@ class _MapWidgetState extends State<MapWidget> {
           Material(
               child: InkWell(
                   onTap: () => _regionPressed(region),
-                  child: Container(
+                  child: AnimatedContainer(
+                    duration: kAnimationDurationLong,
+                      curve: Curves.easeInOut,
                       color: _getColorForStatGradient(statistic.total, widget.category, widget._maxCount)
                   ))),
           CustomPaint(painter: PathPainter(region, _pressedProvince == region, widget.category))
@@ -124,7 +126,6 @@ class PathClipper extends CustomClipper<Path> {
 
 Color _getColorForStatGradient(int count, Category category, int maxCount) {
 
-  //print('_getColorForStatGradient($count, $category, $maxCount)');
   final colors = colorGradientMap[category];
   final start = colors[0];
   final end = colors[1];
@@ -132,7 +133,6 @@ Color _getColorForStatGradient(int count, Category category, int maxCount) {
 
   final fraction = count.toDouble() / max(maxCount, 1) ;
   final adjusted = min(max(fraction, 0.05), 0.95);
-  //print('fraction = $fraction')
   return Color.lerp(start, end, adjusted);
 }
 
