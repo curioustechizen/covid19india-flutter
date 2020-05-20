@@ -4,6 +4,8 @@ abstract class Failure {
   Failure(this.errorMessage);
 }
 
+//TODO: Make this use @freezed annotation when there's more clarity on how to use it
+// see https://github.com/rrousselGit/freezed/issues/141
 class NetworkFailure implements Failure {
   final String _errorMessage;
   final Error cause;

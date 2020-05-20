@@ -25,12 +25,11 @@ class MapStateLevelViewModel
   MapStateLevelViewModel({
     @required StateLevelState initialState,
     @required this.getStateLevelUseCase
-  }) : super(initialState: initialState) {
-    dispatchAction(StateLevelAction.init());
-  }
+  }) : super(initialState: initialState);
 
   @override
-  void dispatchAction(StateLevelAction action) {
+  // TODO: implement actionProcessor
+  Function(StateLevelAction action) get actionProcessor => (action) {
     var stateLevelInfoSuccess = (Map<StateUT, SummaryInfo> success) =>
         emit(_mapToUiState(success));
     var stateLevelInfoFailure = (Failure failure) =>
@@ -49,6 +48,12 @@ class MapStateLevelViewModel
               category, stateLevelInfoSuccess, stateLevelInfoFailure);
         }
     );
+  };
+
+  @override
+  void onInit() {
+    super.onInit();
+    dispatchAction(StateLevelAction.init());
   }
 
   StateLevelState _mapToUiState(Map<StateUT, SummaryInfo> success) {
