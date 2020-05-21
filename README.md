@@ -6,6 +6,8 @@ Inspired by https://www.covid19india.org/ which is an [open source](https://gith
 
 If you would like to contribute, please first discuss with me (either as comments on existing issues, or by opening a new issue).
 
+Take a look at [`docs`](docs/) folder for more detailed technical information including Architecture, libraries used, SVG Maps generation and more.
+
 ## Screenshots
 
 Here's a gif recording of the home screen. As usual, the quality of the GIF is not really great. [Click here](https://youtu.be/h3p9_ntxgd4) for a better quality WEBM recording on YouTube.
