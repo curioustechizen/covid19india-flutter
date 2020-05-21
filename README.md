@@ -8,7 +8,9 @@ If you would like to contribute, please first discuss with me (either as comment
 
 ## Screenshots
 
-![Home Screen](screenshots/Covid19IndiaFlutter.png)
+Here's a gif recording of the home screen. As usual, the quality of the GIF is not really great. [Click here](https://youtu.be/h3p9_ntxgd4) for a better quality WEBM recording on YouTube.
+
+![Home Screen](screenshots/covid19india-flutter.gif)
 
 
 ## Running
