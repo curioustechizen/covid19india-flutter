@@ -9,19 +9,25 @@ class PointsLineChart extends StatelessWidget {
   final Category category;
   final Color baseColor;
 
-  PointsLineChart({@required this.chartPoints, @required this.category}): this.baseColor = categoryColorsMap[category];
+  PointsLineChart({@required this.chartPoints, @required this.category})
+      : this.baseColor = categoryColorsMap[category];
 
   @override
   Widget build(BuildContext context) {
-    return new charts.TimeSeriesChart(_initChartSeries(),
-        animate: true,
+    return category == Category.active
+        ? _buildPlaceHolderWidget(context)
+        : _buildChartWidget();
+  }
+
+  Widget _buildChartWidget() {
+    return charts.TimeSeriesChart(_initChartSeries(),
+        animate: false,
         domainAxis: new charts.EndPointsTimeAxisSpec(),
         defaultRenderer: new charts.LineRendererConfig(
-            includePoints: true,
-            roundEndCaps: true,
-            strokeWidthPx: 4,
-        )
-    );
+          includePoints: true,
+          roundEndCaps: true,
+          strokeWidthPx: 4,
+        ));
   }
 
   List<charts.Series<ChartPoint, DateTime>> _initChartSeries() {
@@ -34,6 +40,18 @@ class PointsLineChart extends StatelessWidget {
           colorFn: (_, __) => charts.Color(
               r: baseColor.red, g: baseColor.green, b: baseColor.blue))
     ];
+  }
+
+  Widget _buildPlaceHolderWidget(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Center(
+        child: Text(
+          "Charts for this category coming soon",
+          style: Theme.of(context).textTheme.headline5.copyWith(color: baseColor),
+        ),
+      ),
+    );
   }
 }
 
