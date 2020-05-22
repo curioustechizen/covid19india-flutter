@@ -28,7 +28,6 @@ class MapStateLevelViewModel
   }) : super(initialState: initialState);
 
   @override
-  // TODO: implement actionProcessor
   Function(StateLevelAction action) get actionProcessor => (action) {
     var stateLevelInfoSuccess = (Map<StateUT, SummaryInfo> success) =>
         emit(_mapToUiState(success));

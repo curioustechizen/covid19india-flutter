@@ -1,6 +1,6 @@
 import 'package:domain/src/base/failure.dart';
 import 'package:either_option/either_option.dart';
-import 'models.dart';
+import '../common/models.dart';
 import '../base/common_models.dart';
 
 abstract class SummaryRepository {

@@ -1,37 +1,57 @@
 /// Line chart example
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:covid19in/constants.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 
 class PointsLineChart extends StatelessWidget {
   final List<ChartPoint> chartPoints;
-  final bool animate;
+  final Category category;
+  final Color baseColor;
 
-  PointsLineChart(this.chartPoints, {this.animate});
+  PointsLineChart({@required this.chartPoints, @required this.category})
+      : this.baseColor = categoryColorsMap[category];
 
   @override
   Widget build(BuildContext context) {
-    return new charts.TimeSeriesChart(_initChartSeries(),
-        animate: animate,
+    return category == Category.active
+        ? _buildPlaceHolderWidget(context)
+        : _buildChartWidget();
+  }
+
+  Widget _buildChartWidget() {
+    return charts.TimeSeriesChart(_initChartSeries(),
+        animate: false,
         domainAxis: new charts.EndPointsTimeAxisSpec(),
         defaultRenderer: new charts.LineRendererConfig(
-            includePoints: true,
-            roundEndCaps: true,
-            strokeWidthPx: 4,
-        )
-    );
+          includePoints: true,
+          roundEndCaps: true,
+          strokeWidthPx: 4,
+        ));
   }
 
   List<charts.Series<ChartPoint, DateTime>> _initChartSeries() {
     return [
       charts.Series<ChartPoint, DateTime>(
-          id: 'Confirmed',
+          id: category.toString(),
           data: chartPoints,
           domainFn: (ChartPoint pt, _) => pt.date,
           measureFn: (ChartPoint pt, _) => pt.count,
           colorFn: (_, __) => charts.Color(
-              r: kConfirmed.red, g: kConfirmed.green, b: kConfirmed.blue))
+              r: baseColor.red, g: baseColor.green, b: baseColor.blue))
     ];
+  }
+
+  Widget _buildPlaceHolderWidget(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Center(
+        child: Text(
+          "Charts for this category coming soon",
+          style: Theme.of(context).textTheme.headline5.copyWith(color: baseColor),
+        ),
+      ),
+    );
   }
 }
 

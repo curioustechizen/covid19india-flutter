@@ -3,23 +3,9 @@ import 'dart:convert';
 import 'package:domain/domain.dart';
 import 'package:http/http.dart' as http;
 import 'package:either_option/either_option.dart';
-
-final kJsonKeysMapTotal = {
-  Category.confirmed: 'cases',
-  Category.recovered: 'recovered',
-  Category.active: 'active',
-  Category.deceased: 'deaths'
-};
-
-final kJsonKeysMapToday = {
-  Category.confirmed: 'todayCases',
-  Category.recovered: 'todayRecovered',
-  Category.deceased: 'todayDeaths'
-};
+import 'data_constants.dart';
 
 class SummaryRepositoryImpl extends SummaryRepository {
-
-  final _url = 'https://covidstat.info/graphql';
 
   @override
   Future<Either<Failure, Map<Category, SummaryInfo>>> getSummary() async {
@@ -30,7 +16,7 @@ class SummaryRepositoryImpl extends SummaryRepository {
 
     try {
       final networkResponse = await http
-          .post(_url, headers: {'Content-Type': 'application/json'}, body: jsonEncode(bodyObject));
+          .post(kUrl, headers: {'Content-Type': 'application/json'}, body: jsonEncode(bodyObject));
       if(networkResponse.statusCode == 200) {
         return Right(_parseSummaryResponse(networkResponse.body));
       } else {
@@ -59,7 +45,7 @@ class SummaryRepositoryImpl extends SummaryRepository {
 
     try {
       final networkResponse = await http
-          .post(_url, headers: {'Content-Type': 'application/json'}, body: jsonEncode(bodyObject));
+          .post(kUrl, headers: {'Content-Type': 'application/json'}, body: jsonEncode(bodyObject));
       if(networkResponse.statusCode == 200) {
         return Right(_parseStateLevelDetails(networkResponse.body, category));
       } else {

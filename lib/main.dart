@@ -17,15 +17,28 @@ void main() {
 }
 
 final SummaryInfo _emptySummaryInfo = SummaryInfo(0, 0);
-final Map<StateUT, SummaryInfo> _emptyStateLevelDetails = {for(var state in StateUT.values) state:_emptySummaryInfo};
+final Map<StateUT, SummaryInfo> _emptyStateLevelDetails = {
+  for (var state in StateUT.values) state: _emptySummaryInfo
+};
 
 class _ModuleContainer {
   Injector init(Injector injector) {
     injector.map<SummaryRepository>((injector) => SummaryRepositoryImpl(),
         isSingleton: true);
+    injector.map<HistoricalRepository>((injector) => HistoricalRepositoryImpl(),
+        isSingleton: true);
+
     injector.map<GetSummaryUseCase>(
-        (injector) => GetSummaryUseCase(injector.get<SummaryRepository>()), isSingleton: true);
-    injector.map<GetStateLevelUseCase>((injector) => GetStateLevelUseCase(injector.get<SummaryRepository>()), isSingleton: true);
+        (injector) => GetSummaryUseCase(injector.get<SummaryRepository>()),
+        isSingleton: true);
+    injector.map<GetStateLevelUseCase>(
+        (injector) => GetStateLevelUseCase(injector.get<SummaryRepository>()),
+        isSingleton: true);
+    injector.map<GetHistoricalDataUseCase>(
+        (injector) =>
+            GetHistoricalDataUseCase(injector.get<HistoricalRepository>()),
+        isSingleton: true);
+
     injector.map<SummaryViewModel>((injector) => SummaryViewModel(
         getSummaryUseCase: injector.get<GetSummaryUseCase>(),
         initialState:
@@ -41,18 +54,23 @@ class _ModuleContainer {
         })));
 
     injector.map<MapStateLevelViewModel>((injector) => MapStateLevelViewModel(
-      getStateLevelUseCase: injector.get<GetStateLevelUseCase>(),
-      initialState: StateLevelState(
-        selectedCategory: Category.confirmed, stateLevelInfo: _emptyStateLevelDetails
-      )
-    ));
+        getStateLevelUseCase: injector.get<GetStateLevelUseCase>(),
+        initialState: StateLevelState(
+            selectedCategory: Category.confirmed,
+            stateLevelInfo: _emptyStateLevelDetails)));
+
+    injector.map<ChartsViewModel>(
+      (injector) => ChartsViewModel(
+          getHistoricalDataUseCase: injector.get<GetHistoricalDataUseCase>(),
+          initialState:
+              ChartsState(currentCategory: Category.confirmed, dataPoints: [])),
+    );
 
     return injector;
   }
 }
 
 class MyApp extends StatelessWidget {
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
