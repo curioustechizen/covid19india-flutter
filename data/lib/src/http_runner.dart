@@ -1,14 +1,21 @@
 import 'dart:math';
 
+import 'package:data/src/historical_repository.dart';
 import 'package:data/src/summary_repository.dart';
 import 'package:domain/domain.dart';
 
 Future<void> main() async {
   final summaryRepo = SummaryRepositoryImpl();
-  final stateLevel = await summaryRepo.getStateLevelDetails(Category.confirmed);
-  final answer = stateLevel.fold((Failure f){}, (Map<StateUT, SummaryInfo> success) {
-    return success.values.map((e) => e.total).reduce(max);
+  final historicalRepo = HistoricalRepositoryImpl();
+
+  final historicalInfo = await historicalRepo.getHistoricalData(
+      StatisticScope.country(), Category.confirmed, 14);
+
+  historicalInfo.fold(
+          (Failure f) {
+    print(f);
+  }, (List<HistoricalDataPoint> success) {
+    print(success);
   });
-  print(stateLevel);
-  print('Max = $answer');
+  //print(answer);
 }

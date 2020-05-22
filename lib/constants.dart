@@ -24,6 +24,13 @@ final Map<Category, List<Color>> colorGradientMap = {
   Category.deceased: [Colors.white, const Color(0xff2f2f2f)],
 };
 
+final Map<Category, Color> categoryColorsMap = {
+  Category.confirmed: kConfirmed,
+  Category.active: kActive,
+  Category.recovered: kRecovered,
+  Category.deceased: kDeceased
+};
+
 const kMapSvgHeight = 331.71;
 const kMapSvgWidth = 320.0;
 
