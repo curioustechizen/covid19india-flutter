@@ -14,9 +14,11 @@ class _$StateLevelStateTearOff {
 
   _StateLevelState call(
       {@required Category selectedCategory,
+      StateUT highlightedRegion,
       @required Map<StateUT, SummaryInfo> stateLevelInfo}) {
     return _StateLevelState(
       selectedCategory: selectedCategory,
+      highlightedRegion: highlightedRegion,
       stateLevelInfo: stateLevelInfo,
     );
   }
@@ -27,6 +29,7 @@ const $StateLevelState = _$StateLevelStateTearOff();
 
 mixin _$StateLevelState {
   Category get selectedCategory;
+  StateUT get highlightedRegion;
   Map<StateUT, SummaryInfo> get stateLevelInfo;
 
   $StateLevelStateCopyWith<StateLevelState> get copyWith;
@@ -37,7 +40,9 @@ abstract class $StateLevelStateCopyWith<$Res> {
           StateLevelState value, $Res Function(StateLevelState) then) =
       _$StateLevelStateCopyWithImpl<$Res>;
   $Res call(
-      {Category selectedCategory, Map<StateUT, SummaryInfo> stateLevelInfo});
+      {Category selectedCategory,
+      StateUT highlightedRegion,
+      Map<StateUT, SummaryInfo> stateLevelInfo});
 }
 
 class _$StateLevelStateCopyWithImpl<$Res>
@@ -51,12 +56,16 @@ class _$StateLevelStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object selectedCategory = freezed,
+    Object highlightedRegion = freezed,
     Object stateLevelInfo = freezed,
   }) {
     return _then(_value.copyWith(
       selectedCategory: selectedCategory == freezed
           ? _value.selectedCategory
           : selectedCategory as Category,
+      highlightedRegion: highlightedRegion == freezed
+          ? _value.highlightedRegion
+          : highlightedRegion as StateUT,
       stateLevelInfo: stateLevelInfo == freezed
           ? _value.stateLevelInfo
           : stateLevelInfo as Map<StateUT, SummaryInfo>,
@@ -71,7 +80,9 @@ abstract class _$StateLevelStateCopyWith<$Res>
       __$StateLevelStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {Category selectedCategory, Map<StateUT, SummaryInfo> stateLevelInfo});
+      {Category selectedCategory,
+      StateUT highlightedRegion,
+      Map<StateUT, SummaryInfo> stateLevelInfo});
 }
 
 class __$StateLevelStateCopyWithImpl<$Res>
@@ -87,12 +98,16 @@ class __$StateLevelStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object selectedCategory = freezed,
+    Object highlightedRegion = freezed,
     Object stateLevelInfo = freezed,
   }) {
     return _then(_StateLevelState(
       selectedCategory: selectedCategory == freezed
           ? _value.selectedCategory
           : selectedCategory as Category,
+      highlightedRegion: highlightedRegion == freezed
+          ? _value.highlightedRegion
+          : highlightedRegion as StateUT,
       stateLevelInfo: stateLevelInfo == freezed
           ? _value.stateLevelInfo
           : stateLevelInfo as Map<StateUT, SummaryInfo>,
@@ -104,18 +119,22 @@ class _$_StateLevelState
     with DiagnosticableTreeMixin
     implements _StateLevelState {
   const _$_StateLevelState(
-      {@required this.selectedCategory, @required this.stateLevelInfo})
+      {@required this.selectedCategory,
+      this.highlightedRegion,
+      @required this.stateLevelInfo})
       : assert(selectedCategory != null),
         assert(stateLevelInfo != null);
 
   @override
   final Category selectedCategory;
   @override
+  final StateUT highlightedRegion;
+  @override
   final Map<StateUT, SummaryInfo> stateLevelInfo;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'StateLevelState(selectedCategory: $selectedCategory, stateLevelInfo: $stateLevelInfo)';
+    return 'StateLevelState(selectedCategory: $selectedCategory, highlightedRegion: $highlightedRegion, stateLevelInfo: $stateLevelInfo)';
   }
 
   @override
@@ -124,6 +143,7 @@ class _$_StateLevelState
     properties
       ..add(DiagnosticsProperty('type', 'StateLevelState'))
       ..add(DiagnosticsProperty('selectedCategory', selectedCategory))
+      ..add(DiagnosticsProperty('highlightedRegion', highlightedRegion))
       ..add(DiagnosticsProperty('stateLevelInfo', stateLevelInfo));
   }
 
@@ -134,6 +154,9 @@ class _$_StateLevelState
             (identical(other.selectedCategory, selectedCategory) ||
                 const DeepCollectionEquality()
                     .equals(other.selectedCategory, selectedCategory)) &&
+            (identical(other.highlightedRegion, highlightedRegion) ||
+                const DeepCollectionEquality()
+                    .equals(other.highlightedRegion, highlightedRegion)) &&
             (identical(other.stateLevelInfo, stateLevelInfo) ||
                 const DeepCollectionEquality()
                     .equals(other.stateLevelInfo, stateLevelInfo)));
@@ -143,6 +166,7 @@ class _$_StateLevelState
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(selectedCategory) ^
+      const DeepCollectionEquality().hash(highlightedRegion) ^
       const DeepCollectionEquality().hash(stateLevelInfo);
 
   @override
@@ -153,10 +177,13 @@ class _$_StateLevelState
 abstract class _StateLevelState implements StateLevelState {
   const factory _StateLevelState(
       {@required Category selectedCategory,
+      StateUT highlightedRegion,
       @required Map<StateUT, SummaryInfo> stateLevelInfo}) = _$_StateLevelState;
 
   @override
   Category get selectedCategory;
+  @override
+  StateUT get highlightedRegion;
   @override
   Map<StateUT, SummaryInfo> get stateLevelInfo;
   @override
@@ -175,6 +202,12 @@ class _$StateLevelActionTearOff {
       category,
     );
   }
+
+  _HighlightRegion highlightRegion(StateUT region) {
+    return _HighlightRegion(
+      region,
+    );
+  }
 }
 
 // ignore: unused_element
@@ -185,22 +218,26 @@ mixin _$StateLevelAction {
   Result when<Result extends Object>({
     @required Result init(),
     @required Result selectCategory(Category category),
+    @required Result highlightRegion(StateUT region),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result init(),
     Result selectCategory(Category category),
+    Result highlightRegion(StateUT region),
     @required Result orElse(),
   });
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result init(_StateLevelActionInit value),
     @required Result selectCategory(_SelectCategory value),
+    @required Result highlightRegion(_HighlightRegion value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result init(_StateLevelActionInit value),
     Result selectCategory(_SelectCategory value),
+    Result highlightRegion(_HighlightRegion value),
     @required Result orElse(),
   });
 }
@@ -266,9 +303,11 @@ class _$_StateLevelActionInit
   Result when<Result extends Object>({
     @required Result init(),
     @required Result selectCategory(Category category),
+    @required Result highlightRegion(StateUT region),
   }) {
     assert(init != null);
     assert(selectCategory != null);
+    assert(highlightRegion != null);
     return init();
   }
 
@@ -277,6 +316,7 @@ class _$_StateLevelActionInit
   Result maybeWhen<Result extends Object>({
     Result init(),
     Result selectCategory(Category category),
+    Result highlightRegion(StateUT region),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -291,9 +331,11 @@ class _$_StateLevelActionInit
   Result map<Result extends Object>({
     @required Result init(_StateLevelActionInit value),
     @required Result selectCategory(_SelectCategory value),
+    @required Result highlightRegion(_HighlightRegion value),
   }) {
     assert(init != null);
     assert(selectCategory != null);
+    assert(highlightRegion != null);
     return init(this);
   }
 
@@ -302,6 +344,7 @@ class _$_StateLevelActionInit
   Result maybeMap<Result extends Object>({
     Result init(_StateLevelActionInit value),
     Result selectCategory(_SelectCategory value),
+    Result highlightRegion(_HighlightRegion value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -386,9 +429,11 @@ class _$_SelectCategory
   Result when<Result extends Object>({
     @required Result init(),
     @required Result selectCategory(Category category),
+    @required Result highlightRegion(StateUT region),
   }) {
     assert(init != null);
     assert(selectCategory != null);
+    assert(highlightRegion != null);
     return selectCategory(category);
   }
 
@@ -397,6 +442,7 @@ class _$_SelectCategory
   Result maybeWhen<Result extends Object>({
     Result init(),
     Result selectCategory(Category category),
+    Result highlightRegion(StateUT region),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -411,9 +457,11 @@ class _$_SelectCategory
   Result map<Result extends Object>({
     @required Result init(_StateLevelActionInit value),
     @required Result selectCategory(_SelectCategory value),
+    @required Result highlightRegion(_HighlightRegion value),
   }) {
     assert(init != null);
     assert(selectCategory != null);
+    assert(highlightRegion != null);
     return selectCategory(this);
   }
 
@@ -422,6 +470,7 @@ class _$_SelectCategory
   Result maybeMap<Result extends Object>({
     Result init(_StateLevelActionInit value),
     Result selectCategory(_SelectCategory value),
+    Result highlightRegion(_HighlightRegion value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -437,4 +486,132 @@ abstract class _SelectCategory implements StateLevelAction {
 
   Category get category;
   _$SelectCategoryCopyWith<_SelectCategory> get copyWith;
+}
+
+abstract class _$HighlightRegionCopyWith<$Res> {
+  factory _$HighlightRegionCopyWith(
+          _HighlightRegion value, $Res Function(_HighlightRegion) then) =
+      __$HighlightRegionCopyWithImpl<$Res>;
+  $Res call({StateUT region});
+}
+
+class __$HighlightRegionCopyWithImpl<$Res>
+    extends _$StateLevelActionCopyWithImpl<$Res>
+    implements _$HighlightRegionCopyWith<$Res> {
+  __$HighlightRegionCopyWithImpl(
+      _HighlightRegion _value, $Res Function(_HighlightRegion) _then)
+      : super(_value, (v) => _then(v as _HighlightRegion));
+
+  @override
+  _HighlightRegion get _value => super._value as _HighlightRegion;
+
+  @override
+  $Res call({
+    Object region = freezed,
+  }) {
+    return _then(_HighlightRegion(
+      region == freezed ? _value.region : region as StateUT,
+    ));
+  }
+}
+
+class _$_HighlightRegion
+    with DiagnosticableTreeMixin
+    implements _HighlightRegion {
+  const _$_HighlightRegion(this.region) : assert(region != null);
+
+  @override
+  final StateUT region;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'StateLevelAction.highlightRegion(region: $region)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'StateLevelAction.highlightRegion'))
+      ..add(DiagnosticsProperty('region', region));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _HighlightRegion &&
+            (identical(other.region, region) ||
+                const DeepCollectionEquality().equals(other.region, region)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(region);
+
+  @override
+  _$HighlightRegionCopyWith<_HighlightRegion> get copyWith =>
+      __$HighlightRegionCopyWithImpl<_HighlightRegion>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result init(),
+    @required Result selectCategory(Category category),
+    @required Result highlightRegion(StateUT region),
+  }) {
+    assert(init != null);
+    assert(selectCategory != null);
+    assert(highlightRegion != null);
+    return highlightRegion(region);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result init(),
+    Result selectCategory(Category category),
+    Result highlightRegion(StateUT region),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (highlightRegion != null) {
+      return highlightRegion(region);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result init(_StateLevelActionInit value),
+    @required Result selectCategory(_SelectCategory value),
+    @required Result highlightRegion(_HighlightRegion value),
+  }) {
+    assert(init != null);
+    assert(selectCategory != null);
+    assert(highlightRegion != null);
+    return highlightRegion(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result init(_StateLevelActionInit value),
+    Result selectCategory(_SelectCategory value),
+    Result highlightRegion(_HighlightRegion value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (highlightRegion != null) {
+      return highlightRegion(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _HighlightRegion implements StateLevelAction {
+  const factory _HighlightRegion(StateUT region) = _$_HighlightRegion;
+
+  StateUT get region;
+  _$HighlightRegionCopyWith<_HighlightRegion> get copyWith;
 }

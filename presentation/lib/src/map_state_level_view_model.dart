@@ -7,47 +7,51 @@ part 'map_state_level_view_model.freezed.dart';
 
 @freezed
 abstract class StateLevelState with _$StateLevelState {
-  const factory StateLevelState({
-    @required Category selectedCategory,
-    @required Map<StateUT, SummaryInfo> stateLevelInfo}) = _StateLevelState;
+  const factory StateLevelState(
+      {@required Category selectedCategory,
+      StateUT highlightedRegion,
+      @required Map<StateUT, SummaryInfo> stateLevelInfo}) = _StateLevelState;
 }
 
 @freezed
 abstract class StateLevelAction with _$StateLevelAction {
   const factory StateLevelAction.init() = _StateLevelActionInit;
-  const factory StateLevelAction.selectCategory(Category category) = _SelectCategory;
+  const factory StateLevelAction.selectCategory(Category category) =
+      _SelectCategory;
+  const factory StateLevelAction.highlightRegion(StateUT region) =
+      _HighlightRegion;
 }
 
 class MapStateLevelViewModel
     extends BaseViewModel<StateLevelState, StateLevelAction> {
   final GetStateLevelUseCase getStateLevelUseCase;
 
-  MapStateLevelViewModel({
-    @required StateLevelState initialState,
-    @required this.getStateLevelUseCase
-  }) : super(initialState: initialState);
+  MapStateLevelViewModel(
+      {@required StateLevelState initialState,
+      @required this.getStateLevelUseCase})
+      : super(initialState: initialState);
 
   @override
   Function(StateLevelAction action) get actionProcessor => (action) {
-    var stateLevelInfoSuccess = (Map<StateUT, SummaryInfo> success) =>
-        emit(_mapToUiState(success));
-    var stateLevelInfoFailure = (Failure failure) =>
-        emit(_mapToUiStateFailure(failure));
+        var stateLevelInfoSuccess =
+            (Map<StateUT, SummaryInfo> success) => emit(_mapToUiState(success));
+        var stateLevelInfoFailure =
+            (Failure failure) => emit(_mapToUiStateFailure(failure));
 
-    action.when(
-        init: () =>
-            getStateLevelUseCase.invoke(
+        action.when(
+            init: () => getStateLevelUseCase.invoke(
                 currentState.selectedCategory,
                 stateLevelInfoSuccess,
-                stateLevelInfoFailure
-            ),
-        selectCategory: (category) {
-          emit(this.currentState.copyWith(selectedCategory: category));
-          getStateLevelUseCase.invoke(
-              category, stateLevelInfoSuccess, stateLevelInfoFailure);
-        }
-    );
-  };
+                stateLevelInfoFailure),
+            selectCategory: (category) {
+              emit(this.currentState.copyWith(
+                  selectedCategory: category, highlightedRegion: null));
+              getStateLevelUseCase.invoke(
+                  category, stateLevelInfoSuccess, stateLevelInfoFailure);
+            },
+            highlightRegion: (region) =>
+                emit(this.currentState.copyWith(highlightedRegion: region)));
+      };
 
   @override
   void onInit() {
@@ -60,7 +64,7 @@ class MapStateLevelViewModel
   }
 
   StateLevelState _mapToUiStateFailure(Failure failure) {
-    final empty = { for(var state in StateUT.values) state: SummaryInfo(0, 0)};
+    final empty = {for (var state in StateUT.values) state: SummaryInfo(0, 0)};
     return this.currentState.copyWith(stateLevelInfo: empty);
   }
 }
