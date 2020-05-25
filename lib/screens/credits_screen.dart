@@ -32,6 +32,11 @@ class CreditsScreen extends StatelessWidget {
                 title: "covidstat.info website",
                 link: "https://covidstat.info/graphql",
                 bulletPoints: ["GraphQL endpoint for Covid19 India API"])),
+        CreditsSection(data: CreditsData(
+          title: "Freepik (flaticon.com)",
+          link: "https://www.flaticon.com/free-icon/virus_2659970",
+          bulletPoints: ["Icon made by Freepik from www.flaticon.com"]
+        ))
       ],
     );
   }
@@ -58,10 +63,16 @@ class CreditsSection extends StatelessWidget {
         color: themeData.primaryColor, decoration: TextDecoration.underline);
     return SingleChildScrollView(
       child: AnimationLimiter(
-        child: Column(
-          children: AnimationConfiguration.toStaggeredList(
-            duration: const Duration(milliseconds: 550),
-              childAnimationBuilder: (widget) => SlideAnimation(verticalOffset: 16.0, child: FadeInAnimation(child: widget,),), children: <Widget>[
+          child: Column(
+        children: AnimationConfiguration.toStaggeredList(
+          duration: const Duration(milliseconds: 550),
+          childAnimationBuilder: (widget) => SlideAnimation(
+            verticalOffset: 16.0,
+            child: FadeInAnimation(
+              child: widget,
+            ),
+          ),
+          children: <Widget>[
             ListTile(
                 title: Text(
               data.title,
@@ -86,8 +97,7 @@ class CreditsSection extends StatelessWidget {
             )
           ],
         ),
-        )
-      ),
+      )),
     );
   }
 

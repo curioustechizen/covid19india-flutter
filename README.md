@@ -48,3 +48,7 @@ This is a GraphQL wrapper around the covid19india API. It provides a more conven
 ### [Flutter clickable regions Github Repo](https://github.com/gi097/flutter_clickable_regions)
 
 The original React app uses TopoJSON but the only client library available for it is d3.js. The `flutter_clickable_regions` repo shows how to have clickable SVG regions in Flutter. This app uses converts the topojson to SVG using the approach outlined in `flutter_clickable_regions`. 
+
+### [FlatIcon](https://www.flaticon.com/free-icon/virus_2659970)
+
+The app icon is based on an SVG icon that I downloaded for free. Made by Freepik from www.flaticon.com"
