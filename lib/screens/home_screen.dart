@@ -44,66 +44,66 @@ class HomeScreen extends StatelessWidget {
                         },
                       );
               }),
-          SizedBox(
-            height: 32.0,
-          ),
           Expanded(
-            child: PageView(
-              scrollDirection: Axis.vertical,
-              controller: _pageController,
-              children: <Widget>[
-                StreamBuilder<StateLevelState>(
-                    stream: _mapStateLevelViewModel.uiState.distinct(),
-                    builder: (context, snapshot) {
-                      return !snapshot.hasData
-                          ? CircularProgressIndicator()
-                          : Container(
-                              height: MediaQuery.of(context).size.width *
-                                  0.9 *
-                                  kMapSvgHeight /
-                                  kMapSvgWidth,
-                              width: MediaQuery.of(context).size.width * 0.9,
-                              child: ZoomableWidget(
-                                child: MapWidget(
-                                  category: snapshot.data.selectedCategory,
-                                  statistics: snapshot.data.stateLevelInfo,
-                                  highlightedRegion:
-                                      snapshot.data.highlightedRegion,
-                                  onRegionHighlighted: (region) {
-                                    _mapStateLevelViewModel.dispatchAction(
-                                        StateLevelAction.highlightRegion(
-                                            region));
-                                  },
-                                ),
-                              ));
-                    }),
-                StreamBuilder<ChartsState>(
-                    stream: _chartViewModel.uiState.distinct(),
-                    builder: (context, snapshot) {
-                      return !snapshot.hasData
-                          ? CircularProgressIndicator()
-                          : AnimatedContainer(
-                              duration: kAnimationDurationMedium,
-                              decoration: BoxDecoration(
-                                  color: categoryColorsMap[
-                                          snapshot.data.currentCategory]
-                                      .withAlpha(16),
-                                  borderRadius: BorderRadius.circular(4.0)),
-                              child: Container(
-                                  height: 160.0,
-                                  width: 320.0,
-                                  padding: EdgeInsets.all(8.0),
-                                  child: PointsLineChart(
-                                    chartPoints: snapshot.data.dataPoints
-                                        .map((HistoricalDataPoint p) =>
-                                            ChartPoint(
-                                                date: p.date, count: p.count))
-                                        .toList(),
-                                    category: snapshot.data.currentCategory,
-                                  )),
-                            );
-                    })
-              ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: PageView(
+                scrollDirection: Axis.vertical,
+                controller: _pageController,
+                children: <Widget>[
+                  StreamBuilder<StateLevelState>(
+                      stream: _mapStateLevelViewModel.uiState.distinct(),
+                      builder: (context, snapshot) {
+                        return !snapshot.hasData
+                            ? CircularProgressIndicator()
+                            : Container(
+                                height: MediaQuery.of(context).size.width *
+                                    0.9 *
+                                    kMapSvgHeight /
+                                    kMapSvgWidth,
+                                width: MediaQuery.of(context).size.width * 0.9,
+                                child: ZoomableWidget(
+                                  child: MapWidget(
+                                    category: snapshot.data.selectedCategory,
+                                    statistics: snapshot.data.stateLevelInfo,
+                                    highlightedRegion:
+                                        snapshot.data.highlightedRegion,
+                                    onRegionHighlighted: (region) {
+                                      _mapStateLevelViewModel.dispatchAction(
+                                          StateLevelAction.highlightRegion(
+                                              region));
+                                    },
+                                  ),
+                                ));
+                      }),
+                  StreamBuilder<ChartsState>(
+                      stream: _chartViewModel.uiState.distinct(),
+                      builder: (context, snapshot) {
+                        return !snapshot.hasData
+                            ? CircularProgressIndicator()
+                            : AnimatedContainer(
+                                duration: kAnimationDurationMedium,
+                                decoration: BoxDecoration(
+                                    color: categoryColorsMap[
+                                            snapshot.data.currentCategory]
+                                        .withAlpha(16),
+                                    borderRadius: BorderRadius.circular(4.0)),
+                                child: Container(
+                                    height: 160.0,
+                                    width: 320.0,
+                                    padding: EdgeInsets.all(8.0),
+                                    child: PointsLineChart(
+                                      chartPoints: snapshot.data.dataPoints
+                                          .map((HistoricalDataPoint p) =>
+                                              ChartPoint(
+                                                  date: p.date, count: p.count))
+                                          .toList(),
+                                      category: snapshot.data.currentCategory,
+                                    )),
+                              );
+                      })
+                ],
+              ),
             ),
           ),
         ],
