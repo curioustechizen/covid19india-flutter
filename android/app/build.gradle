@@ -33,7 +33,7 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.setProperty('storePassword', System.getenv('KEY_STORE_PASSWORD'));
     keystoreProperties.setProperty('keyPassword', System.getenv('KEY_PASSWORD'));
     keystoreProperties.setProperty('keyAlias', System.getenv('ALIAS'));
-    keystoreProperties.setProperty('storeFile', System.getenv('SIGNING_KEY'));
+    keystoreProperties.setProperty('storeFile', System.getenv('KEY_PATH'));
 }
 
 android {
