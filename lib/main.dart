@@ -57,6 +57,7 @@ class _ModuleContainer {
         getStateLevelUseCase: injector.get<GetStateLevelUseCase>(),
         initialState: StateLevelState(
             selectedCategory: Category.confirmed,
+            highlightedRegion: null,
             stateLevelInfo: _emptyStateLevelDetails)));
 
     injector.map<ChartsViewModel>(

@@ -15,9 +15,11 @@ import 'map_svg_data.dart';
 class MapWidget extends StatefulWidget {
   final Map<StateUT, SummaryInfo> statistics;
   final Category category;
+  final StateUT highlightedRegion;
+  final Function onRegionHighlighted;
   final _maxCount;
 
-  MapWidget({Key key, this.statistics, this.category}): this._maxCount =_calculateMaxCount(statistics), super(key: key);
+  MapWidget({Key key, this.statistics, this.category, this.highlightedRegion, this.onRegionHighlighted}): this._maxCount =_calculateMaxCount(statistics), super(key: key);
 
   @override
   _MapWidgetState createState() => _MapWidgetState();
@@ -28,7 +30,7 @@ class MapWidget extends StatefulWidget {
 }
 
 class _MapWidgetState extends State<MapWidget> {
-  StateUT _pressedProvince;
+  //StateUT _pressedProvince;
 
   _MapWidgetState();
 
@@ -73,15 +75,13 @@ class _MapWidgetState extends State<MapWidget> {
                       curve: Curves.easeInOut,
                       color: _getColorForStatGradient(statistic.total, widget.category, widget._maxCount)
                   ))),
-          CustomPaint(painter: PathPainter(region, _pressedProvince == region, widget.category))
+          CustomPaint(painter: PathPainter(region, widget.highlightedRegion == region, widget.category))
         ]),
         clipper: PathClipper(region));
   }
 
   void _regionPressed(StateUT province) {
-    setState(() {
-      _pressedProvince = province;
-    });
+    widget.onRegionHighlighted(province);
   }
 }
 
@@ -101,7 +101,7 @@ class PathPainter extends CustomPainter {
         Paint()
           ..style = PaintingStyle.stroke
           ..color = _isPressed ? baseColor : baseColor.withAlpha(64)
-          ..strokeWidth = _isPressed ? 3.0 : 1.0);
+          ..strokeWidth = _isPressed ? 2.5 : 1.0);
   }
 
   @override
