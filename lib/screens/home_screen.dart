@@ -35,7 +35,6 @@ class HomeScreen extends StatelessWidget {
                         selectedCategory: snapshot.data.selectedCategory,
                         summaryInfo: snapshot.data.summaryItems,
                         onCategorySelected: (Category category) {
-                          //TODO: Combine these into one ViewModel
                           _summaryViewModel.dispatchAction(
                               SummaryAction.categoryTapped(category));
                           _mapStateLevelViewModel.dispatchAction(

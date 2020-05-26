@@ -10,8 +10,6 @@ class CreditsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
     final textTheme = themeData.textTheme;
-    final linkTextStyle = textTheme.bodyText1.copyWith(
-        color: themeData.primaryColor, decoration: TextDecoration.underline);
     return ListView(
       padding: EdgeInsets.all(16.0),
       children: <Widget>[

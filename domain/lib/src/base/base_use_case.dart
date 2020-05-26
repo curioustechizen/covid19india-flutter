@@ -1,3 +1,5 @@
+import 'package:rxdart/rxdart.dart';
+
 import 'failure.dart';
 import 'package:either_option/either_option.dart';
 
@@ -7,4 +9,9 @@ abstract class BaseUseCase<P, R> {
     final answer = await run(params);
     answer.fold(onFailure, onSuccess);
   }
+}
+
+abstract class StreamUseCase<P, R> {
+  BehaviorSubject<Either<Failure, R>> run(P params);
+  void invoke(P params, Function(BehaviorSubject<R>) onSuccess, Function(BehaviorSubject<Failure>) onFailure) async
 }
