@@ -1,5 +1,6 @@
 import 'package:covid19in/constants.dart';
 import 'package:covid19in/widgets/charts/chart_widget.dart';
+import 'package:covid19in/widgets/decoration_animation_builder.dart';
 import 'package:covid19in/widgets/maps/map_widget.dart';
 import 'package:covid19in/widgets/summary/summary_row.dart';
 import 'package:covid19in/widgets/zoomable.dart';
@@ -81,9 +82,8 @@ class HomeScreen extends StatelessWidget {
                       builder: (context, snapshot) {
                         return !snapshot.hasData
                             ? CircularProgressIndicator()
-                            : AnimatedContainer(
-                                duration: kAnimationDurationMedium,
-                                decoration: BoxDecoration(
+                            : DecorationAnimationBuilder(
+                                endDecoration: BoxDecoration(
                                     color: categoryColorsMap[
                                             snapshot.data.currentCategory]
                                         .withAlpha(16),

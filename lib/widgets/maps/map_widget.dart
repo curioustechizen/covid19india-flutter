@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:covid19in/constants.dart';
+import 'package:covid19in/widgets/color_animation_builder.dart';
 import 'package:domain/domain.dart';
 ///
 /// Created by Giovanni Terlingen
@@ -12,7 +13,7 @@ import 'package:flutter/painting.dart';
 import 'map_svg_data.dart';
 
 
-class MapWidget extends StatefulWidget {
+class MapWidget extends StatelessWidget {
   final Map<StateUT, SummaryInfo> statistics;
   final Category category;
   final StateUT highlightedRegion;
@@ -21,18 +22,10 @@ class MapWidget extends StatefulWidget {
 
   MapWidget({Key key, this.statistics, this.category, this.highlightedRegion, this.onRegionHighlighted}): this._maxCount =_calculateMaxCount(statistics), super(key: key);
 
-  @override
-  _MapWidgetState createState() => _MapWidgetState();
 
   static int _calculateMaxCount(Map<StateUT, SummaryInfo> statistics) {
     return statistics.values.map((SummaryInfo e) => e.total).reduce(max);
   }
-}
-
-class _MapWidgetState extends State<MapWidget> {
-  //StateUT _pressedProvince;
-
-  _MapWidgetState();
 
   @override
   Widget build(BuildContext context) {
@@ -63,25 +56,23 @@ class _MapWidgetState extends State<MapWidget> {
   }
 
   Widget _buildRegion(StateUT region) {
-    var statistic = widget.statistics[region];
+    var statistic = statistics[region];
     return ClipPath(
         clipBehavior: Clip.antiAlias,
         child: Stack(children: <Widget>[
-          Material(
-              child: InkWell(
-                  onTap: () => _regionPressed(region),
-                  child: AnimatedContainer(
-                    duration: kAnimationDurationLong,
-                      curve: Curves.easeInOut,
-                      color: _getColorForStatGradient(statistic.total, widget.category, widget._maxCount)
-                  ))),
-          CustomPaint(painter: PathPainter(region, widget.highlightedRegion == region, widget.category))
+          GestureDetector(
+              onTap: () => _regionPressed(region),
+              child:
+                  Container (
+                  color: _getColorForStatGradient(statistic.total, category, _maxCount)
+              )),
+          CustomPaint(painter: PathPainter(region, highlightedRegion == region, category))
         ]),
         clipper: PathClipper(region));
   }
 
   void _regionPressed(StateUT province) {
-    widget.onRegionHighlighted(province);
+    onRegionHighlighted(province);
   }
 }
 

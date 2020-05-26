@@ -1,5 +1,5 @@
 
-import 'package:covid19in/constants.dart';
+import 'package:covid19in/widgets/decoration_animation_builder.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 
@@ -33,18 +33,14 @@ class SummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<BoxShadow> boxShadows = data.isSelected ? [BoxShadow(color: summaryColor.withOpacity(0.2), blurRadius: 8.0, offset: new Offset(0.0, 4.0))] : [];
+    final unselectedDecoration = BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular(8.0));
+    final selectedDecoration = BoxDecoration(color: summaryColor.withAlpha(32), borderRadius: BorderRadius.circular(8.0), boxShadow: [BoxShadow(color: summaryColor.withOpacity(0.2), blurRadius: 8.0, offset: new Offset(0.0, 4.0))]);
+
     return InkWell(
       onTap: onSelected,
       borderRadius: BorderRadius.circular(8.0),
-      child: AnimatedContainer(
-        duration: kAnimationDurationLong,
-        curve: Curves.easeInOut,
-        decoration: BoxDecoration(
-            color: data.isSelected
-                ? summaryColor.withAlpha(32)
-                : Colors.transparent,
-            borderRadius: BorderRadius.circular(8.0),boxShadow: boxShadows),
+      child: DecorationAnimationBuilder(
+        endDecoration: data.isSelected ? selectedDecoration : unselectedDecoration,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: RichText(
