@@ -1,3 +1,5 @@
+**NOT MAINTAINED ANYMORE**
+
 # Covid 19 India Flutter app
 
 Inspired by https://www.covid19india.org/ which is an [open source](https://github.com/covid19india/covid19india-react) React App.
